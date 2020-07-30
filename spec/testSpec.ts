@@ -2,13 +2,13 @@
 (global as any).g = require("@akashic/akashic-engine");
 
 describe("mainScene", () => {
-	beforeEach(() => {
-	});
+  beforeEach(() => {
+  });
 
-	afterEach(() => {
-	});
+  afterEach(() => {
+  });
 
-	it("example", () => {
-		expect(g).not.toBeUndefined();
-	});
+  it("example", () => {
+    expect(g).not.toBeUndefined();
+  });
 });
