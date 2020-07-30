@@ -2,11 +2,10 @@
   "compilerOptions": {
     "target": "ES5",
     "lib": ["es5"],
-    "noImplicitAny": true,
     "module": "commonjs" ,
     "outDir": "script",
     "types" : [],
-    "noImplicitUseStrict": true
+    "strict": true
   },
   "files": [
     "node_modules/@akashic/akashic-engine/lib/main.d.ts"
