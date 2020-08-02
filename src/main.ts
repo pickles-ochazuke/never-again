@@ -1,34 +1,25 @@
 function main(param: g.GameMainParameterObject): void {
   const scene = new g.Scene({game: g.game});
 
+  console.log("Game Start!!");
+
   scene.loaded.add(() => {
     // 以下にゲームのロジックを記述します。
 
-    // ルートエンティティ
-    const e = new g.E({scene: scene});
-
     // 背景
     const background = createBackground(scene);
-    e.append(background);
+    scene.append(background);
 
     // コントローラUI
     const ui = new g.E({scene: scene});
 
     // Player
     const player = createPlayer(scene);
-    e.append(player);
+    scene.append(player);
 
     // 移動 UI
     const playerController = createPlayerController(scene, player);
-    e.append(playerController);
-
-    // ゲームの更新処理
-    player.update.add(() => {
-      // 以下のコードは毎フレーム実行されます。
-    });
-
-    // ルートエンティティをゲームに関連付ける
-    scene.append(e);
+    scene.append(playerController);
   });
 
   g.game.pushScene(scene);
@@ -153,11 +144,18 @@ function createBackground(scene: g.Scene): g.E {
 }
 
 function createPlayer(scene:g.Scene): g.E {
-  return new g.FilledRect({
+  const player = new g.FilledRect({
     scene: scene,
     cssColor: "#ff0000",
     width: 32,
     height: 32,
     touchable: true
   });
+
+  // プレイヤーの更新処理
+  player.update.add(() => {
+    // 以下のコードは毎フレーム実行されます。
+  });
+
+  return player;
 }
