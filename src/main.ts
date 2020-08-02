@@ -4,49 +4,30 @@ function main(param: g.GameMainParameterObject): void {
   scene.loaded.add(() => {
     // 以下にゲームのロジックを記述します。
 
-    const e = new g.E({scene});
+    // ルートエンティティ
+    const e = new g.E({scene: scene});
 
-    const background = new g.FilledRect({
-      scene: scene,
-      cssColor: "#FFFFFF",
-      width: g.game.width,
-      height: g.game.height,
-    });
-
+    // 背景
+    const background = createBackground(scene);
     e.append(background);
 
-    // Player
-    const rect = new g.FilledRect({
-      scene: scene,
-      cssColor: "#ff0000",
-      width: 32,
-      height: 32,
-      touchable: true
-    });
+    // コントローラUI
+    const ui = new g.E({scene: scene});
 
-    // 移動UI
-    const playerController = createPlayerController(scene, rect);
+    // Player
+    const player = createPlayer(scene);
+    e.append(player);
+
+    // 移動 UI
+    const playerController = createPlayerController(scene, player);
     e.append(playerController);
 
-    // scene.pointDownCapture.add(() => {
-    //   rect.cssColor = "blue";
-    //   rect.modified();
-    // });
-
-    // scene.pointUpCapture.add(() => {
-    //   rect.cssColor = "gray";
-    //   rect.modified();
-    // });
-
-    rect.update.add(() => {
+    // ゲームの更新処理
+    player.update.add(() => {
       // 以下のコードは毎フレーム実行されます。
-      // rect.x++;
-      // if (rect.x > g.game.width) rect.x = 0;
-      // rect.modified();
     });
 
-    e.append(rect);
-
+    // ルートエンティティをゲームに関連付ける
     scene.append(e);
   });
 
@@ -159,4 +140,24 @@ function createPlayerController(scene: g.Scene, player: g.E): g.E {
   controller.append(bottom);
 
   return controller
+}
+
+function createBackground(scene: g.Scene): g.E {
+
+  return new g.FilledRect({
+    scene: scene,
+    cssColor: "#FFFFFF",
+    width: g.game.width,
+    height: g.game.height,
+  });
+}
+
+function createPlayer(scene:g.Scene): g.E {
+  return new g.FilledRect({
+    scene: scene,
+    cssColor: "#ff0000",
+    width: 32,
+    height: 32,
+    touchable: true
+  });
 }
