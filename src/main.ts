@@ -6,22 +6,32 @@ function main(param: g.GameMainParameterObject): void {
   scene.loaded.add(() => {
     // 以下にゲームのロジックを記述します。
 
-    // 背景
+    /**
+     * 描画対象を各層に分ける
+     * 層は全部で6つ
+     * UI
+     * 天井
+     * キャラクター
+     * イベント
+     * タイル（床）
+     * バックグラウンド
+     * 上の層は下の層を覆い隠す。
+     */
+    // 背景の層
     const background = createBackground(scene);
     scene.append(background);
 
+    // 床の層
+    const floor = createFloor(scene, 15, 14);
+    scene.append(floor);
 
-    // Player
+    // キャラクター層
     const player = createPlayer(scene);
     scene.append(player);
 
-    // コントローラUI
+    // UI層
     const ui = createUi(scene, player);
     scene.append(ui);
-
-    // // 移動 UI
-    // const playerController = createPlayerController(scene, player);
-    // scene.append(playerController);
   });
 
   g.game.pushScene(scene);
@@ -35,9 +45,9 @@ function createUi(scene: g.Scene, player: g.E): g.E {
   const ui = new g.E({
     scene: scene,
     x: 0,
-    y: g.game.height * 0.6,
+    y: g.game.height * 0.7,
     width: g.game.width,
-    height: g.game.height * 0.4
+    height: g.game.height * 0.3
   });
 
   // debug用のUI背景
@@ -199,4 +209,50 @@ function createPlayer(scene:g.Scene): g.E {
   });
 
   return player;
+}
+
+function createFloor(scene: g.Scene, tilesX: number, tilesY:number): g.E {
+
+  const floor = new g.E({
+    scene: scene,
+    width: g.game.width,
+    height: g.game.height * 0.6
+  });
+  
+  for (let y = 0; y < tilesY; y++) {
+    for (let x = 0; x < tilesX; x++) {
+      floor.append(createTile(scene, floor, x, y));
+    }
+  }
+
+  return floor;
+}
+
+function createTile(scene: g.Scene, parent: g.E, tileX: number, tileY: number): g.E {
+  const e = new g.E({scene: scene});
+
+  const width = 32;
+  const height = 32;
+
+  const frame = new g.FilledRect({
+    scene: scene,
+    cssColor: "#000000",
+    width: width,
+    height: height,
+    x: tileX * width,
+    y: tileY * height
+  });
+  e.append(frame);
+
+  const filled = new g.FilledRect({
+    scene: scene,
+    cssColor: "#C71585",
+    width: width - 2,
+    height: height - 2,
+    x: frame.x + 1,
+    y: frame.y + 1
+  });
+  e.append(filled);
+
+  return e;
 }
