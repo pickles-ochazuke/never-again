@@ -26,11 +26,16 @@ function main(param: g.GameMainParameterObject): void {
     scene.append(floor);
 
     // キャラクター層
+    const characters = new g.E({ scene: scene });
     const player = createPlayer(scene);
-    scene.append(player);
+    const block = createBlock(scene, 7, 8);
+
+    characters.append(player);
+    characters.append(block);
+    scene.append(characters);
 
     // UI層
-    const ui = createUi(scene, player);
+    const ui = createUi(scene, player, block);
     scene.append(ui);
   });
 
@@ -39,7 +44,7 @@ function main(param: g.GameMainParameterObject): void {
 
 export = main;
 
-function createUi(scene: g.Scene, player: g.E): g.E {
+function createUi(scene: g.Scene, player: g.E, block: g.E): g.E {
 
   // UI の描画領域と位置を決める
   const ui = new g.E({
@@ -58,13 +63,13 @@ function createUi(scene: g.Scene, player: g.E): g.E {
     height: ui.height,
   }));
   
-  const controller = createPlayerController(scene, player, ui);
+  const controller = createPlayerController(scene, player, ui, block);
   ui.append(controller);
 
   return ui; 
 }
 
-function createPlayerController(scene: g.Scene, player: g.E, parent: g.E): g.E {
+function createPlayerController(scene: g.Scene, player: g.E, parent: g.E, block: g.E): g.E {
 
   const centerX = parent.width / 2;
   const centerY = parent.height / 2;
@@ -84,6 +89,10 @@ function createPlayerController(scene: g.Scene, player: g.E, parent: g.E): g.E {
     right.modified();
 
     player.x += player.width;
+    if (player.y == block.y && player.x == block.x ) {
+      player.x -= player.width;
+    }
+
     player.modified();
   });
 
@@ -107,6 +116,10 @@ function createPlayerController(scene: g.Scene, player: g.E, parent: g.E): g.E {
     left.modified();
 
     player.x -= player.width;
+    if (player.y == block.y && player.x == block.x ) {
+      player.x += player.width;
+    }
+
     player.modified();
   });
 
@@ -130,6 +143,10 @@ function createPlayerController(scene: g.Scene, player: g.E, parent: g.E): g.E {
     top.modified();
 
     player.y += player.height;
+    if (player.x == block.x && player.y == block.y ) {
+      player.y -= player.height;
+    }
+
     player.modified();
   });
 
@@ -153,6 +170,9 @@ function createPlayerController(scene: g.Scene, player: g.E, parent: g.E): g.E {
     bottom.modified();
 
     player.y -= player.height;
+    if (player.x == block.x && player.y == block.y ) {
+      player.y += player.height;
+    }
     player.modified();
   });
 
@@ -194,21 +214,36 @@ function createBackground(scene: g.Scene): g.E {
   return background;
 }
 
-function createPlayer(scene:g.Scene): g.E {
+function createPlayer(scene: g.Scene): g.E {
   const player = new g.FilledRect({
     scene: scene,
     cssColor: "#ff0000",
     width: 32,
     height: 32,
-    touchable: true
+    touchable: true,
+    tag: 'Player'
   });
 
   // プレイヤーの更新処理
   player.update.add(() => {
     // 以下のコードは毎フレーム実行されます。
+
   });
 
   return player;
+}
+
+function createBlock(scene: g.Scene, x: number = 0, y: number = 0): g.E {
+  const block = new g.FilledRect({
+    scene: scene,
+    cssColor: "#000000",
+    width: 32,
+    height: 32,
+    x: x * 32,
+    y: y * 32
+  })
+  
+  return block;
 }
 
 function createFloor(scene: g.Scene, tilesX: number, tilesY:number): g.E {
