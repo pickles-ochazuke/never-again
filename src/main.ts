@@ -1,10 +1,16 @@
+import { Player } from "./player";
+import { Controller } from "./controller";
+import { Ui } from "./ui";
+import { Game } from "./game";
+
 function main(param: g.GameMainParameterObject): void {
   const scene = new g.Scene({game: g.game});
 
   console.log("Game Start!!");
 
   scene.loaded.add(() => {
-    // 以下にゲームのロジックを記述します。
+
+    const game = new Game();
 
     /**
      * 描画対象を各層に分ける
@@ -27,16 +33,18 @@ function main(param: g.GameMainParameterObject): void {
 
     // キャラクター層
     const characters = new g.E({ scene: scene });
-    const player = createPlayer(scene);
+    const player = new Player(game, scene);
     const block = createBlock(scene, 7, 8);
 
-    characters.append(player);
+    game.addBlock(block);
+
+    characters.append(player.entity);
     characters.append(block);
     scene.append(characters);
 
     // UI層
-    const ui = createUi(scene, player, block);
-    scene.append(ui);
+    const ui = createUi(scene, player);
+    scene.append(ui.entity);
   });
 
   g.game.pushScene(scene);
@@ -44,32 +52,22 @@ function main(param: g.GameMainParameterObject): void {
 
 export = main;
 
-function createUi(scene: g.Scene, player: g.E, block: g.E): g.E {
+/****************************************************
+ * その他の関数
+ */
 
-  // UI の描画領域と位置を決める
-  const ui = new g.E({
-    scene: scene,
-    x: 0,
-    y: g.game.height * 0.7,
-    width: g.game.width,
-    height: g.game.height * 0.3
-  });
+ function createUi(scene: g.Scene, player: Player): Ui {
 
-  // debug用のUI背景
-  ui.append(new g.FilledRect({
-    scene: scene,
-    cssColor: "#8aafebAA",
-    width: ui.width,
-    height: ui.height,
-  }));
+  const ui = new Ui(scene);
   
-  const controller = createPlayerController(scene, player, ui, block);
-  ui.append(controller);
+  const controller = createPlayerController(scene, player, ui);
+
+  ui.controller = controller;
 
   return ui; 
 }
 
-function createPlayerController(scene: g.Scene, player: g.E, parent: g.E, block: g.E): g.E {
+function createPlayerController(scene: g.Scene, player: Player, parent: Ui): Controller {
 
   const centerX = parent.width / 2;
   const centerY = parent.height / 2;
@@ -84,23 +82,6 @@ function createPlayerController(scene: g.Scene, player: g.E, parent: g.E, block:
     touchable: true
   });
 
-  right.pointDown.add(() => {
-    right.cssColor = "black";
-    right.modified();
-
-    player.x += player.width;
-    if (player.y == block.y && player.x == block.x ) {
-      player.x -= player.width;
-    }
-
-    player.modified();
-  });
-
-  right.pointUp.add(() => {
-    right.cssColor = "#FF0000";
-    right.modified();
-  });
-
   const left = new g.FilledRect({
     scene: scene,
     cssColor: "#00FF00",
@@ -111,48 +92,14 @@ function createPlayerController(scene: g.Scene, player: g.E, parent: g.E, block:
     touchable: true
   });
 
-  left.pointDown.add(() => {
-    left.cssColor = "black";
-    left.modified();
-
-    player.x -= player.width;
-    if (player.y == block.y && player.x == block.x ) {
-      player.x += player.width;
-    }
-
-    player.modified();
-  });
-
-  left.pointUp.add(() => {
-    left.cssColor = "#00FF00";
-    left.modified();
-  });
-
   const top = new g.FilledRect({
     scene: scene,
     cssColor: "#0000FF",
     width: 32,
     height: 32,
     x: centerX - 16,
-    y: centerY + 32,
+    y: centerY - 32,
     touchable: true
-  });
-
-  top.pointDown.add(() => {
-    top.cssColor = "black";
-    top.modified();
-
-    player.y += player.height;
-    if (player.x == block.x && player.y == block.y ) {
-      player.y -= player.height;
-    }
-
-    player.modified();
-  });
-
-  top.pointUp.add(() => {
-    top.cssColor = "#0000FF";
-    top.modified();
   });
 
   const bottom = new g.FilledRect({
@@ -161,33 +108,11 @@ function createPlayerController(scene: g.Scene, player: g.E, parent: g.E, block:
     width: 32,
     height: 32,
     x: centerX - 16,
-    y: centerY - 32,
+    y: centerY + 32,
     touchable: true
   });
 
-  bottom.pointDown.add(() => {
-    bottom.cssColor = "black";
-    bottom.modified();
-
-    player.y -= player.height;
-    if (player.x == block.x && player.y == block.y ) {
-      player.y += player.height;
-    }
-    player.modified();
-  });
-
-  bottom.pointUp.add(() => {
-    bottom.cssColor = "#FFFF00";
-    bottom.modified();
-  });
-
-  const controller = new g.E({scene});
-  controller.append(right);
-  controller.append(left);
-  controller.append(top);
-  controller.append(bottom);
-
-  return controller
+  return new Controller(right, left, top, bottom, scene, player);
 }
 
 function createBackground(scene: g.Scene): g.E {
@@ -212,25 +137,6 @@ function createBackground(scene: g.Scene): g.E {
   background.append(columnLine);
 
   return background;
-}
-
-function createPlayer(scene: g.Scene): g.E {
-  const player = new g.FilledRect({
-    scene: scene,
-    cssColor: "#ff0000",
-    width: 32,
-    height: 32,
-    touchable: true,
-    tag: 'Player'
-  });
-
-  // プレイヤーの更新処理
-  player.update.add(() => {
-    // 以下のコードは毎フレーム実行されます。
-
-  });
-
-  return player;
 }
 
 function createBlock(scene: g.Scene, x: number = 0, y: number = 0): g.E {

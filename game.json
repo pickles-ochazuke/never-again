@@ -8,6 +8,26 @@
 			"type": "script",
 			"path": "script/main.js",
 			"global": true
+		},
+		"player": {
+			"type": "script",
+			"path": "script/player.js",
+			"global": true
+		},
+		"controller": {
+			"type": "script",
+			"path": "script/controller.js",
+			"global": true
+		},
+		"game": {
+			"type": "script",
+			"path": "script/game.js",
+			"global": true
+		},
+		"ui": {
+			"type": "script",
+			"path": "script/ui.js",
+			"global": true
 		}
 	},
 	"moduleMainScripts": {},
