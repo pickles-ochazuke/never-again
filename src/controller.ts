@@ -1,9 +1,12 @@
 import { Player } from "./player";
+import { Vector2 } from "./vector2";
 
 export class Controller {
 
   private _entity: g.E;
-  get entity() { return this._entity; }
+  get entity() {
+    return this._entity;
+  }
 
   constructor(
     private right: g.FilledRect,
@@ -66,18 +69,18 @@ export class Controller {
   }
 
   moveRight() {
-    this.player.move(1, 0);
+    this.player.move(new Vector2(1, 0));
   }
 
   moveLeft() {
-    this.player.move(-1, 0);
+    this.player.move(new Vector2(-1, 0));
   }
 
   moveTop() {
-    this.player.move(0, -1);
+    this.player.move(new Vector2(0, -1));
   }
 
   moveBottom() {
-    this.player.move(0, 1);
+    this.player.move(new Vector2(0, 1));
   }
 }

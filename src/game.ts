@@ -1,15 +1,17 @@
-import { Player } from "./player";
+import { Block } from "./block";
 
 export class Game {
 
-  private _blocks: g.E[] = [];
-  get blocks(): g.E[] { return this._blocks; }
+	private _blocks: Block[] = [];
+	get blocks(): Block[] {
+		return this._blocks;
+	}
 
-  constructor() {
+	constructor() {
 
-  }
+	}
 
-  addBlock(block: g.E) {
-    this._blocks.push(block);
-  }
+	addBlock(block: Block) {
+		this._blocks.push(block);
+	}
 }

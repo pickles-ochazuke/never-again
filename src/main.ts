@@ -2,6 +2,7 @@ import { Player } from "./player";
 import { Controller } from "./controller";
 import { Ui } from "./ui";
 import { Game } from "./game";
+import { Block } from "./block";
 
 function main(param: g.GameMainParameterObject): void {
   const scene = new g.Scene({game: g.game});
@@ -34,12 +35,12 @@ function main(param: g.GameMainParameterObject): void {
     // キャラクター層
     const characters = new g.E({ scene: scene });
     const player = new Player(game, scene);
-    const block = createBlock(scene, 7, 8);
+    const block = createBlock(scene, game, 7, 8);
 
     game.addBlock(block);
 
     characters.append(player.entity);
-    characters.append(block);
+    characters.append(block.entity);
     scene.append(characters);
 
     // UI層
@@ -139,17 +140,9 @@ function createBackground(scene: g.Scene): g.E {
   return background;
 }
 
-function createBlock(scene: g.Scene, x: number = 0, y: number = 0): g.E {
-  const block = new g.FilledRect({
-    scene: scene,
-    cssColor: "#000000",
-    width: 32,
-    height: 32,
-    x: x * 32,
-    y: y * 32
-  })
+function createBlock(scene: g.Scene, game: Game, x: number = 0, y: number = 0): Block {
   
-  return block;
+  return new Block(x, y, game, scene);
 }
 
 function createFloor(scene: g.Scene, tilesX: number, tilesY:number): g.E {

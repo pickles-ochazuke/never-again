@@ -1,11 +1,19 @@
 import { Game } from "./game";
+import { Vector2 } from "./vector2";
 
 export class Player {
   private _entity: g.E;
-  get entity(): g.E { return this._entity; }
+  get entity(): g.E {
+    return this._entity;
+  }
+  
+  private _x = 0;
+  get x() { return this._x; }
+  
+  private _y = 0;
+  get y() { return this._y; }
 
-  private vectorX = 0;
-  private vectorY = 0;
+  private vector = new Vector2();
 
   constructor(
     private game: Game,
@@ -17,7 +25,7 @@ export class Player {
       width: 32,
       height: 32,
       touchable: true,
-      tag: 'Player'
+      tag: "Player"
     });
 
     this._entity.update.add(() => {
@@ -26,19 +34,19 @@ export class Player {
   }
 
   update() {
-    this._entity.x += this.vectorX * this._entity.width;
-    this._entity.y += this.vectorY * this._entity.height;
+    this._x += this.vector.x;
+    this._y += this.vector.y;
 
     // 衝突判定
     this.game.blocks.forEach(block => {
-      if (this._entity.y == block.y && this._entity.x == block.x) {
-        this._entity.x -= this.vectorX * this._entity.width;
-        this._entity.y -= this.vectorY * this._entity.height;
+      if (this.y == block.y && this.x == block.x) {
+        this._x -= this.vector.x;
+        this._y -= this.vector.y;
       }
     });
 
-    this.vectorX = 0;
-    this.vectorY = 0;
+    this.vector.initialize();
+    this.positionUpdate();
     this._entity.modified();
   }
 
@@ -47,8 +55,12 @@ export class Player {
    * @param x 指定した値だけ増加する
    * @param y 指定した値だけ増加する
    */
-  move(x: number, y: number) {
-    this.vectorX = x;
-    this.vectorY = y;
+  move(vector: Vector2) {
+    this.vector.plus(vector);
+  }
+
+  positionUpdate() {
+    this.entity.x = this.x * this.entity.width;
+    this.entity.y = this.y * this.entity.height;
   }
 }

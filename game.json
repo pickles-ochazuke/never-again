@@ -28,6 +28,16 @@
 			"type": "script",
 			"path": "script/ui.js",
 			"global": true
+		},
+		"vector2": {
+			"type": "script",
+			"path": "script/vector2.js",
+			"global": true
+		},
+		"block": {
+			"type": "script",
+			"path": "script/block.js",
+			"global": true
 		}
 	},
 	"moduleMainScripts": {},
