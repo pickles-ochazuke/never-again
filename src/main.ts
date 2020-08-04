@@ -1,19 +1,19 @@
-import { Player } from "./player";
-import { Controller } from "./controller";
-import { Ui } from "./ui";
-import { Game } from "./game";
 import { Block } from "./block";
+import { Controller } from "./controller";
+import { Game } from "./game";
+import { Player } from "./player";
+import { Ui } from "./ui";
 
 function main(param: g.GameMainParameterObject): void {
-  const scene = new g.Scene({game: g.game});
+	const scene = new g.Scene({game: g.game});
 
-  console.log("Game Start!!");
+	console.log("Game Start!!");
 
-  scene.loaded.add(() => {
+	scene.loaded.add(() => {
 
-    const game = new Game();
+		const game = new Game();
 
-    /**
+		/**
      * 描画対象を各層に分ける
      * 層は全部で6つ
      * UI
@@ -24,169 +24,169 @@ function main(param: g.GameMainParameterObject): void {
      * バックグラウンド
      * 上の層は下の層を覆い隠す。
      */
-    // 背景の層
-    const background = createBackground(scene);
-    scene.append(background);
+		// 背景の層
+		const background = createBackground(scene);
+		scene.append(background);
 
-    // 床の層
-    const floor = createFloor(scene, 15, 14);
-    scene.append(floor);
+		// 床の層
+		const floor = createFloor(scene, 15, 14);
+		scene.append(floor);
 
-    // キャラクター層
-    const characters = new g.E({ scene: scene });
-    const player = new Player(game, scene);
-    const block = createBlock(scene, game, 7, 8);
+		// キャラクター層
+		const characters = new g.E({ scene: scene });
+		const player = new Player(game, scene);
+		const block = createBlock(scene, game, 7, 8);
 
-    game.addBlock(block);
+		game.addBlock(block);
 
-    characters.append(player.entity);
-    characters.append(block.entity);
-    scene.append(characters);
+		characters.append(player.entity);
+		characters.append(block.entity);
+		scene.append(characters);
 
-    // UI層
-    const ui = createUi(scene, player);
-    scene.append(ui.entity);
-  });
+		// UI層
+		const ui = createUi(scene, player);
+		scene.append(ui.entity);
+	});
 
-  g.game.pushScene(scene);
+	g.game.pushScene(scene);
 }
 
 export = main;
 
-/****************************************************
+/** **************************************************
  * その他の関数
  */
 
- function createUi(scene: g.Scene, player: Player): Ui {
+function createUi(scene: g.Scene, player: Player): Ui {
 
-  const ui = new Ui(scene);
-  
-  const controller = createPlayerController(scene, player, ui);
+	const ui = new Ui(scene);
 
-  ui.controller = controller;
+	const controller = createPlayerController(scene, player, ui);
 
-  return ui; 
+	ui.controller = controller;
+
+	return ui;
 }
 
 function createPlayerController(scene: g.Scene, player: Player, parent: Ui): Controller {
 
-  const centerX = parent.width / 2;
-  const centerY = parent.height / 2;
+	const centerX = parent.width / 2;
+	const centerY = parent.height / 2;
 
-  const right = new g.FilledRect({
-    scene: scene,
-    cssColor: "#FF0000",
-    width: 32,
-    height: 32,
-    x: centerX + 16,
-    y: centerY + 0,
-    touchable: true
-  });
+	const right = new g.FilledRect({
+		scene: scene,
+		cssColor: "#FF0000",
+		width: 32,
+		height: 32,
+		x: centerX + 16,
+		y: centerY + 0,
+		touchable: true
+	});
 
-  const left = new g.FilledRect({
-    scene: scene,
-    cssColor: "#00FF00",
-    width: 32,
-    height: 32,
-    x: centerX - (16 + 32),
-    y: centerY + 0,
-    touchable: true
-  });
+	const left = new g.FilledRect({
+		scene: scene,
+		cssColor: "#00FF00",
+		width: 32,
+		height: 32,
+		x: centerX - (16 + 32),
+		y: centerY + 0,
+		touchable: true
+	});
 
-  const top = new g.FilledRect({
-    scene: scene,
-    cssColor: "#0000FF",
-    width: 32,
-    height: 32,
-    x: centerX - 16,
-    y: centerY - 32,
-    touchable: true
-  });
+	const top = new g.FilledRect({
+		scene: scene,
+		cssColor: "#0000FF",
+		width: 32,
+		height: 32,
+		x: centerX - 16,
+		y: centerY - 32,
+		touchable: true
+	});
 
-  const bottom = new g.FilledRect({
-    scene: scene,
-    cssColor: "#FFFF00",
-    width: 32,
-    height: 32,
-    x: centerX - 16,
-    y: centerY + 32,
-    touchable: true
-  });
+	const bottom = new g.FilledRect({
+		scene: scene,
+		cssColor: "#FFFF00",
+		width: 32,
+		height: 32,
+		x: centerX - 16,
+		y: centerY + 32,
+		touchable: true
+	});
 
-  return new Controller(right, left, top, bottom, scene, player);
+	return new Controller(right, left, top, bottom, scene, player);
 }
 
 function createBackground(scene: g.Scene): g.E {
 
-  const background = new g.FilledRect({
-    scene: scene,
-    cssColor: "#FFFFFF",
-    width: g.game.width,
-    height: g.game.height,
-  });
+	const background = new g.FilledRect({
+		scene: scene,
+		cssColor: "#FFFFFF",
+		width: g.game.width,
+		height: g.game.height,
+	});
 
-  // 縦の線
-  const columnLine = new g.FilledRect({
-    scene: scene,
-    cssColor: "#000000",
-    width: 1,
-    height: g.game.height,
-    x: g.game.width / 2,
-    y: 0
-  });
+	// 縦の線
+	const columnLine = new g.FilledRect({
+		scene: scene,
+		cssColor: "#000000",
+		width: 1,
+		height: g.game.height,
+		x: g.game.width / 2,
+		y: 0
+	});
 
-  background.append(columnLine);
+	background.append(columnLine);
 
-  return background;
+	return background;
 }
 
 function createBlock(scene: g.Scene, game: Game, x: number = 0, y: number = 0): Block {
-  
-  return new Block(x, y, game, scene);
+
+	return new Block(x, y, game, scene);
 }
 
-function createFloor(scene: g.Scene, tilesX: number, tilesY:number): g.E {
+function createFloor(scene: g.Scene, tilesX: number, tilesY: number): g.E {
 
-  const floor = new g.E({
-    scene: scene,
-    width: g.game.width,
-    height: g.game.height * 0.6
-  });
-  
-  for (let y = 0; y < tilesY; y++) {
-    for (let x = 0; x < tilesX; x++) {
-      floor.append(createTile(scene, floor, x, y));
-    }
-  }
+	const floor = new g.E({
+		scene: scene,
+		width: g.game.width,
+		height: g.game.height * 0.6
+	});
 
-  return floor;
+	for (let y = 0; y < tilesY; y++) {
+		for (let x = 0; x < tilesX; x++) {
+			floor.append(createTile(scene, floor, x, y));
+		}
+	}
+
+	return floor;
 }
 
 function createTile(scene: g.Scene, parent: g.E, tileX: number, tileY: number): g.E {
-  const e = new g.E({scene: scene});
+	const e = new g.E({scene: scene});
 
-  const width = 32;
-  const height = 32;
+	const width = 32;
+	const height = 32;
 
-  const frame = new g.FilledRect({
-    scene: scene,
-    cssColor: "#000000",
-    width: width,
-    height: height,
-    x: tileX * width,
-    y: tileY * height
-  });
-  e.append(frame);
+	const frame = new g.FilledRect({
+		scene: scene,
+		cssColor: "#000000",
+		width: width,
+		height: height,
+		x: tileX * width,
+		y: tileY * height
+	});
+	e.append(frame);
 
-  const filled = new g.FilledRect({
-    scene: scene,
-    cssColor: "#C71585",
-    width: width - 2,
-    height: height - 2,
-    x: frame.x + 1,
-    y: frame.y + 1
-  });
-  e.append(filled);
+	const filled = new g.FilledRect({
+		scene: scene,
+		cssColor: "#C71585",
+		width: width - 2,
+		height: height - 2,
+		x: frame.x + 1,
+		y: frame.y + 1
+	});
+	e.append(filled);
 
-  return e;
+	return e;
 }

@@ -4,25 +4,29 @@
  */
 export class Vector2 {
 
-  get x() { return this._x; }
-  get y() { return this._y; }
-  
+	get x() {
+		return this._x;
+	}
+	get y() {
+		return this._y;
+	}
+
 	constructor(
 		private _x = 0,
 		private _y = 0
 	) {
 	}
 
-  /**
+	/**
    * ベクトル値を初期化する
    */
-  initialize() {
-    this._x = 0;
-    this._y = 0;
-  }
+	initialize() {
+		this._x = 0;
+		this._y = 0;
+	}
 
-  plus(vector: Vector2) {
-    this._x = vector._x;
-    this._y = vector._y;
-  }
+	plus(vector: Vector2) {
+		this._x = vector._x;
+		this._y = vector._y;
+	}
 }
