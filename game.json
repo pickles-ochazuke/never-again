@@ -38,6 +38,11 @@
 			"type": "script",
 			"path": "script/block.js",
 			"global": true
+		},
+		"meta_block": {
+			"type": "script",
+			"path": "script/meta_block.js",
+			"global": true
 		}
 	},
 	"moduleMainScripts": {},

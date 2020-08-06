@@ -14,4 +14,8 @@ export class Game {
 	addBlock(block: Block) {
 		this._blocks.push(block);
 	}
+
+	addBlocks(blocks: Block[]) {
+		this.blocks.push(...blocks);
+	}
 }

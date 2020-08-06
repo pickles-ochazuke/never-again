@@ -1,5 +1,3 @@
-import { Game } from "./game";
-
 export class Block {
 	private _entity: g.E;
 	get entity(): g.E {
@@ -16,7 +14,6 @@ export class Block {
 	constructor(
 		private _x: number,
 		private _y: number,
-		private game: Game,
 		private scene: g.Scene,
 	) {
 		this._entity = new g.FilledRect({

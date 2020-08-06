@@ -1,8 +1,10 @@
 import { Block } from "./block";
 import { Controller } from "./controller";
 import { Game } from "./game";
+import { MetaBlock } from "./meta_block";
 import { Player } from "./player";
 import { Ui } from "./ui";
+import { Vector2 } from "./vector2";
 
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({game: g.game});
@@ -35,12 +37,20 @@ function main(param: g.GameMainParameterObject): void {
 		// キャラクター層
 		const characters = new g.E({ scene: scene });
 		const player = new Player(game, scene);
-		const block = createBlock(scene, game, 7, 8);
 
-		game.addBlock(block);
+    const metas: MetaBlock[] = [
+			{ position: new Vector2(7, 8) },
+			{ position: new Vector2(8, 8) },
+			{ position: new Vector2(8, 9) },
+		];
+		generateBlocks(metas, scene);
+
+		const blocks = generateBlocks(metas, scene);
+		game.addBlocks(blocks);
+		blocks.forEach(block => characters.append(block.entity));
 
 		characters.append(player.entity);
-		characters.append(block.entity);
+
 		scene.append(characters);
 
 		// UI層
@@ -140,9 +150,13 @@ function createBackground(scene: g.Scene): g.E {
 	return background;
 }
 
-function createBlock(scene: g.Scene, game: Game, x: number = 0, y: number = 0): Block {
+function generateBlocks(metas: MetaBlock[], scene: g.Scene) {
+	return metas.map(meta => createBlock(scene, meta.position.x, meta.position.y));
+}
 
-	return new Block(x, y, game, scene);
+function createBlock(scene: g.Scene, x: number = 0, y: number = 0): Block {
+
+	return new Block(x, y, scene);
 }
 
 function createFloor(scene: g.Scene, tilesX: number, tilesY: number): g.E {
