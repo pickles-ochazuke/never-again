@@ -1,13 +1,17 @@
-import { Block } from "./block";
-import { Controller } from "./controller";
-import { Game } from "./game";
+import { Block } from "./domains/block";
+import { Controller } from "./domains/controller";
+import { Game } from "./domains/game";
+import { Player } from "./domains/player";
+import { Ui } from "./domains/ui";
+import { MetaDataRepositoryInterface } from "./interfaces/meta_data_repository_interface";
 import { MetaBlock } from "./meta_block";
-import { Player } from "./player";
-import { Ui } from "./ui";
-import { Vector2 } from "./vector2";
+import { JsonRepository } from "./repositories/json_repository";
 
 function main(param: g.GameMainParameterObject): void {
-	const scene = new g.Scene({game: g.game});
+	const scene = new g.Scene({
+		game: g.game,
+		assetIds: ["stage1"]
+	});
 
 	console.log("Game Start!!");
 
@@ -37,19 +41,15 @@ function main(param: g.GameMainParameterObject): void {
 		// キャラクター層
 		const characters = new g.E({ scene: scene });
 		const player = new Player(game, scene);
+		characters.append(player.entity);
 
-    const metas: MetaBlock[] = [
-			{ position: new Vector2(7, 8) },
-			{ position: new Vector2(8, 8) },
-			{ position: new Vector2(8, 9) },
-		];
-		generateBlocks(metas, scene);
+
+		const repository: MetaDataRepositoryInterface = new JsonRepository(scene);
+		const metas = repository.fetchMetaBlocks("stage1");
 
 		const blocks = generateBlocks(metas, scene);
 		game.addBlocks(blocks);
 		blocks.forEach(block => characters.append(block.entity));
-
-		characters.append(player.entity);
 
 		scene.append(characters);
 

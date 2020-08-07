@@ -1,4 +1,4 @@
-import { Vector2 } from '../src/vector2';
+import { Vector2 } from '../src/domains/vector2';
 
 describe('Vector2', () => {
   it('引数なしで生成すると、初期値はx, yともに0であるべき', () => {

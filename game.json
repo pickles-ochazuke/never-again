@@ -4,49 +4,63 @@
 	"fps": 30,
 	"main": "./script/main.js",
 	"assets": {
-		"main": {
+		"block": {
 			"type": "script",
-			"path": "script/main.js",
-			"global": true
-		},
-		"player": {
-			"type": "script",
-			"path": "script/player.js",
+			"path": "script/domains/block.js",
 			"global": true
 		},
 		"controller": {
 			"type": "script",
-			"path": "script/controller.js",
+			"path": "script/domains/controller.js",
 			"global": true
 		},
 		"game": {
 			"type": "script",
-			"path": "script/game.js",
+			"path": "script/domains/game.js",
+			"global": true
+		},
+		"player": {
+			"type": "script",
+			"path": "script/domains/player.js",
 			"global": true
 		},
 		"ui": {
 			"type": "script",
-			"path": "script/ui.js",
+			"path": "script/domains/ui.js",
 			"global": true
 		},
 		"vector2": {
 			"type": "script",
-			"path": "script/vector2.js",
+			"path": "script/domains/vector2.js",
 			"global": true
 		},
-		"block": {
+		"meta_data_repository_interface": {
 			"type": "script",
-			"path": "script/block.js",
+			"path": "script/interfaces/meta_data_repository_interface.js",
+			"global": true
+		},
+		"main": {
+			"type": "script",
+			"path": "script/main.js",
 			"global": true
 		},
 		"meta_block": {
 			"type": "script",
 			"path": "script/meta_block.js",
 			"global": true
+		},
+		"json_repository": {
+			"type": "script",
+			"path": "script/repositories/json_repository.js",
+			"global": true
+		},
+		"stage1": {
+			"type": "text",
+			"path": "text/stage1.json"
 		}
 	},
-	"moduleMainScripts": {},
 	"environment": {
 		"sandbox-runtime": "2"
-	}
+	},
+	"globalScripts": []
 }
