@@ -7,12 +7,10 @@ export class Player {
 		return this._entity;
 	}
 
-	private _x = 0;
 	get x() {
 		return this._x;
 	}
 
-	private _y = 0;
 	get y() {
 		return this._y;
 	}
@@ -21,7 +19,9 @@ export class Player {
 
 	constructor(
 		private game: Game,
-		private scene: g.Scene
+		private scene: g.Scene,
+		private _x = 0,
+		private _y = 0
 	) {
 		this._entity = new g.FilledRect({
 			scene: this.scene,
@@ -43,7 +43,7 @@ export class Player {
 
 		// 衝突判定
 		this.game.blocks.forEach(block => {
-			if (this.y == block.y && this.x == block.x) {
+			if ((this.y === block.y) && (this.x === block.x)) {
 				this._x -= this.vector.x;
 				this._y -= this.vector.y;
 			}
