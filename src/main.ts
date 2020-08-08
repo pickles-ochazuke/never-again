@@ -3,10 +3,10 @@ import { Controller } from "./domains/controller";
 import { Game } from "./domains/game";
 import { Player } from "./domains/player";
 import { Ui } from "./domains/ui";
+import { Vector2 } from "./domains/vector2";
 import { MetaDataRepositoryInterface } from "./interfaces/meta_data_repository_interface";
 import { MetaBlock } from "./meta_block";
 import { JsonRepository } from "./repositories/json_repository";
-import { Vector2 } from "./domains/vector2";
 
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({
@@ -35,24 +35,24 @@ function main(param: g.GameMainParameterObject): void {
 		const background = createBackground(scene);
 		scene.append(background);
 
-    // 床の層
+		// 床の層
 		const floor = createFloor(scene, 15, 14);
-    scene.append(floor);
+		scene.append(floor);
 
-    // イベント層
-    const events = new g.E({ scene: scene });
-    // スタートとゴールを作成
-    // スタートとゴールは常に真ん中の下と上にする。
-    const startPosition: Vector2 = new Vector2(7, 13);
-    const goalPosition: Vector2 = new Vector2(7, 0);
+		// イベント層
+		const events = new g.E({ scene: scene });
+		// スタートとゴールを作成
+		// スタートとゴールは常に真ん中の下と上にする。
+		const startPosition: Vector2 = new Vector2(7, 13);
+		const goalPosition: Vector2 = new Vector2(7, 0);
 
-    const start = new g.FilledRect({ scene: scene, x: startPosition.x*32, y: startPosition.y*32, width: 32, height: 32, cssColor: "Blue"});
-    events.append(start);
+		const start = new g.FilledRect({ scene: scene, x: startPosition.x*32, y: startPosition.y*32, width: 32, height: 32, cssColor: "Blue"});
+		events.append(start);
 
-    const goal = new g.FilledRect({ scene: scene, x: goalPosition.x*32, y: goalPosition.y*32, width: 32, height: 32, cssColor: "Green"});
-    events.append(goal);
-    scene.append(events);
-    
+		const goal = new g.FilledRect({ scene: scene, x: goalPosition.x*32, y: goalPosition.y*32, width: 32, height: 32, cssColor: "Green"});
+		events.append(goal);
+		scene.append(events);
+
 		// キャラクター層
 		const characters = new g.E({ scene: scene });
 		const player = new Player(game, scene, startPosition.x, startPosition.y);
@@ -65,15 +65,53 @@ function main(param: g.GameMainParameterObject): void {
 		game.addBlocks(blocks);
 		blocks.forEach(block => characters.append(block.entity));
 
-    // エリアの外側をブロックで囲む
-    const walls: Block[] = generateWalls(15, 14, startPosition, goalPosition, scene);
-    walls.forEach(wall => characters.append(wall.entity));
+		// エリアの外側をブロックで囲む
+		const walls: Block[] = generateWalls(15, 14, startPosition, goalPosition, scene);
+		walls.forEach(wall => characters.append(wall.entity));
 
 		scene.append(characters);
 
 		// UI層
 		const ui = createUi(scene, player);
 		scene.append(ui.entity);
+
+		const font = new g.DynamicFont({
+			game: g.game,
+			fontFamily: g.FontFamily.Serif,
+			size: 32
+		});
+		const startLabel = new g.Label({
+			scene: scene,
+			font: font,
+			text: "START!!",
+			fontSize: 32,
+			textColor: "White"
+		});
+		start.update.add(() => {
+			if (player.x === startPosition.x && player.y === startPosition.y) {
+				startLabel.show();
+			} else {
+				startLabel.hide();
+			}
+		});
+		scene.append(startLabel);
+
+		const goalLabel = new g.Label({
+			scene: scene,
+			font: font,
+			text: "GOAL!!",
+			fontSize: 32,
+			textColor: "White"
+		});
+		goalLabel.update.add(() => {
+			if (player.x === goalPosition.x && player.y === goalPosition.y) {
+				goalLabel.show();
+			} else {
+				goalLabel.hide();
+			}
+		});
+		scene.append(goalLabel);
+
 	});
 
 	g.game.pushScene(scene);
@@ -173,24 +211,24 @@ function generateBlocks(metas: MetaBlock[], scene: g.Scene) {
 }
 
 function generateWalls(x: number, y: number, start: Vector2, goal: Vector2, scene: g.Scene) {
-  
-  const ary: Block[] = [];
-  for (let row = 0; row < y; row++) {
-    for (let column = 0; column < x; column++) {
-      if ((column === start.x && row === start.y) || (column === goal.x && row === goal.y)) {
-        continue;
-      }
-      
-      if (
-        (column === 0) ||
+
+	const ary: Block[] = [];
+	for (let row = 0; row < y; row++) {
+		for (let column = 0; column < x; column++) {
+			if ((column === start.x && row === start.y) || (column === goal.x && row === goal.y)) {
+				continue;
+			}
+
+			if (
+				(column === 0) ||
         (column === x-1) ||
         (row === 0) ||
         (row === y-1)
-        )
-      ary.push(new Block(column, row, scene));
-    }
-  }
-  return ary;
+			)
+				ary.push(new Block(column, row, scene));
+		}
+	}
+	return ary;
 }
 
 function createBlock(scene: g.Scene, x: number = 0, y: number = 0): Block {
