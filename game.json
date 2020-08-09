@@ -57,6 +57,11 @@
 		"stage1": {
 			"type": "text",
 			"path": "text/stage1.json"
+		},
+		"background": {
+			"type": "script",
+			"path": "script/domains/background.js",
+			"global": true
 		}
 	},
 	"environment": {

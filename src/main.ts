@@ -7,6 +7,7 @@ import { Vector2 } from "./domains/vector2";
 import { MetaDataRepositoryInterface } from "./interfaces/meta_data_repository_interface";
 import { MetaBlock } from "./meta_block";
 import { JsonRepository } from "./repositories/json_repository";
+import { Background } from "./domains/background";
 
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({
@@ -32,8 +33,8 @@ function main(param: g.GameMainParameterObject): void {
      * 上の層は下の層を覆い隠す。
      */
 		// 背景の層
-		const background = createBackground(scene);
-		scene.append(background);
+		const background = new Background(g.game.width, g.game.height, scene);
+		scene.append(background.entity);
 
 		// 床の層
 		const floor = createFloor(scene, 15, 14);
@@ -180,30 +181,6 @@ function createPlayerController(scene: g.Scene, player: Player, parent: Ui): Con
 	});
 
 	return new Controller(right, left, top, bottom, scene, player);
-}
-
-function createBackground(scene: g.Scene): g.E {
-
-	const background = new g.FilledRect({
-		scene: scene,
-		cssColor: "#FFFFFF",
-		width: g.game.width,
-		height: g.game.height,
-	});
-
-	// 縦の線
-	const columnLine = new g.FilledRect({
-		scene: scene,
-		cssColor: "#000000",
-		width: 1,
-		height: g.game.height,
-		x: g.game.width / 2,
-		y: 0
-	});
-
-	background.append(columnLine);
-
-	return background;
 }
 
 function generateBlocks(metas: MetaBlock[], scene: g.Scene) {
