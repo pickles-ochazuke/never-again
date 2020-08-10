@@ -1,7 +1,17 @@
 import { PlayerActor } from "../actors/player_actor";
 import { Actor } from "./actor";
+import { BackgroundActor } from "../actors/background_actor";
 
 export class Level {
+
+  private _width = g.game.width;
+  get width() {
+    return this._width;
+  }
+  private _height = g.game.height;
+  get height() {
+    return this._height;
+  }
 
   private _entity: g.E | null = null;
   private _scene: g.Scene;
@@ -25,6 +35,7 @@ export class Level {
 
       this._entity = new g.E({scene: this.scene});
 
+      this.actors.push(new BackgroundActor(this));
       this.actors.push(new PlayerActor(this));
       this.scene.append(this._entity);
     });

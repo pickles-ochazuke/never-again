@@ -117,6 +117,16 @@
 			"type": "script",
 			"path": "script/components/transform_component.js",
 			"global": true
+		},
+		"background_actor": {
+			"type": "script",
+			"path": "script/actors/background_actor.js",
+			"global": true
+		},
+		"backgound_component": {
+			"type": "script",
+			"path": "script/components/backgound_component.js",
+			"global": true
 		}
 	},
 	"environment": {
