@@ -1,121 +1,134 @@
 import { Block } from "./domains/block";
 import { Controller } from "./domains/controller";
 import { Game } from "./domains/game";
-import { Player } from "./domains/player";
 import { Ui } from "./domains/ui";
 import { Vector2 } from "./domains/vector2";
 import { MetaDataRepositoryInterface } from "./interfaces/meta_data_repository_interface";
 import { MetaBlock } from "./meta_block";
 import { JsonRepository } from "./repositories/json_repository";
 import { Background } from "./domains/background";
+import { PlayerActor } from "./actors/player_actor";
+import { Level } from "./bases/level";
+import { Player } from "./domains/player";
 
 function main(param: g.GameMainParameterObject): void {
-	const scene = new g.Scene({
-		game: g.game,
-		assetIds: ["stage1"]
-	});
+
+	// const scene = new g.Scene({
+	// 	game: g.game,
+	// 	assetIds: ["stage1"]
+	// });
+
+	const level = new Level();
+	level.initialize();
+
 
 	console.log("Game Start!!");
 
-	scene.loaded.add(() => {
+	// scene.loaded.add(() => {
 
-		const game = new Game();
+	// 	new PlayerActor(scene);
+		// const game = new Game();
 
-		/**
-     * 描画対象を各層に分ける
-     * 層は全部で6つ
-     * UI
-     * 天井
-     * キャラクター
-     * イベント
-     * タイル（床）
-     * バックグラウンド
-     * 上の層は下の層を覆い隠す。
-     */
-		// 背景の層
-		const background = new Background(g.game.width, g.game.height, scene);
-		scene.append(background.entity);
+		// const level = new Level(scene);
 
-		// 床の層
-		const floor = createFloor(scene, 15, 14);
-		scene.append(floor);
 
-		// イベント層
-		const events = new g.E({ scene: scene });
-		// スタートとゴールを作成
-		// スタートとゴールは常に真ん中の下と上にする。
-		const startPosition: Vector2 = new Vector2(7, 13);
-		const goalPosition: Vector2 = new Vector2(7, 0);
 
-		const start = new g.FilledRect({ scene: scene, x: startPosition.x*32, y: startPosition.y*32, width: 32, height: 32, cssColor: "Blue"});
-		events.append(start);
+	// 	/**
+  //    * 描画対象を各層に分ける
+  //    * 層は全部で6つ
+  //    * UI
+  //    * 天井
+  //    * キャラクター
+  //    * イベント
+  //    * タイル（床）
+  //    * バックグラウンド
+  //    * 上の層は下の層を覆い隠す。
+  //    */
+	// 	// 背景の層
+	// 	const background = new Background(g.game.width, g.game.height, scene);
+	// 	scene.append(background.entity);
 
-		const goal = new g.FilledRect({ scene: scene, x: goalPosition.x*32, y: goalPosition.y*32, width: 32, height: 32, cssColor: "Green"});
-		events.append(goal);
-		scene.append(events);
+	// 	// 床の層
+	// 	const floor = createFloor(scene, 15, 14);
+	// 	scene.append(floor);
 
-		// キャラクター層
-		const characters = new g.E({ scene: scene });
-		const player = new Player(game, scene, startPosition.x, startPosition.y);
-		characters.append(player.entity);
+	// 	// イベント層
+	// 	const events = new g.E({ scene: scene });
+	// 	// スタートとゴールを作成
+	// 	// スタートとゴールは常に真ん中の下と上にする。
+	// 	const startPosition: Vector2 = new Vector2(7, 13);
+	// 	const goalPosition: Vector2 = new Vector2(7, 0);
 
-		const repository: MetaDataRepositoryInterface = new JsonRepository(scene);
-		const metas = repository.fetchMetaBlocks("stage1");
+	// 	const start = new g.FilledRect({ scene: scene, x: startPosition.x*32, y: startPosition.y*32, width: 32, height: 32, cssColor: "Blue"});
+	// 	events.append(start);
 
-		const blocks = generateBlocks(metas, scene);
-		game.addBlocks(blocks);
-		blocks.forEach(block => characters.append(block.entity));
+	// 	const goal = new g.FilledRect({ scene: scene, x: goalPosition.x*32, y: goalPosition.y*32, width: 32, height: 32, cssColor: "Green"});
+	// 	events.append(goal);
+	// 	scene.append(events);
 
-		// エリアの外側をブロックで囲む
-		const walls: Block[] = generateWalls(15, 14, startPosition, goalPosition, scene);
-		walls.forEach(wall => characters.append(wall.entity));
+	// 	// キャラクター層
+	// 	const characters = new g.E({ scene: scene });
+	// 	const player = new Player(game, scene, startPosition.x, startPosition.y);
+	// 	characters.append(player.entity);
 
-		scene.append(characters);
+	// 	const repository: MetaDataRepositoryInterface = new JsonRepository(scene);
+	// 	const metas = repository.fetchMetaBlocks("stage1");
 
-		// UI層
-		const ui = createUi(scene, player);
-		scene.append(ui.entity);
+	// 	const blocks = generateBlocks(metas, scene);
+	// 	game.addBlocks(blocks);
+	// 	blocks.forEach(block => characters.append(block.entity));
 
-		const font = new g.DynamicFont({
-			game: g.game,
-			fontFamily: g.FontFamily.Serif,
-			size: 32
-		});
-		const startLabel = new g.Label({
-			scene: scene,
-			font: font,
-			text: "START!!",
-			fontSize: 32,
-			textColor: "White"
-		});
-		start.update.add(() => {
-			if (player.x === startPosition.x && player.y === startPosition.y) {
-				startLabel.show();
-			} else {
-				startLabel.hide();
-			}
-		});
-		scene.append(startLabel);
+	// 	// エリアの外側をブロックで囲む
+	// 	const walls: Block[] = generateWalls(15, 14, startPosition, goalPosition, scene);
+	// 	walls.forEach(wall => characters.append(wall.entity));
 
-		const goalLabel = new g.Label({
-			scene: scene,
-			font: font,
-			text: "GOAL!!",
-			fontSize: 32,
-			textColor: "White"
-		});
-		goalLabel.update.add(() => {
-			if (player.x === goalPosition.x && player.y === goalPosition.y) {
-				goalLabel.show();
-			} else {
-				goalLabel.hide();
-			}
-		});
-		scene.append(goalLabel);
+	// 	scene.append(characters);
 
-	});
+	// 	// UI層
+	// 	const ui = createUi(scene, player);
+	// 	scene.append(ui.entity);
 
-	g.game.pushScene(scene);
+	// 	const font = new g.DynamicFont({
+	// 		game: g.game,
+	// 		fontFamily: g.FontFamily.Serif,
+	// 		size: 32
+	// 	});
+	// 	const startLabel = new g.Label({
+	// 		scene: scene,
+	// 		font: font,
+	// 		text: "START!!",
+	// 		fontSize: 32,
+	// 		textColor: "White"
+	// 	});
+	// 	start.update.add(() => {
+	// 		if (player.x === startPosition.x && player.y === startPosition.y) {
+	// 			startLabel.show();
+	// 		} else {
+	// 			startLabel.hide();
+	// 		}
+	// 	});
+	// 	scene.append(startLabel);
+
+	// 	const goalLabel = new g.Label({
+	// 		scene: scene,
+	// 		font: font,
+	// 		text: "GOAL!!",
+	// 		fontSize: 32,
+	// 		textColor: "White"
+	// 	});
+	// 	goalLabel.update.add(() => {
+	// 		if (player.x === goalPosition.x && player.y === goalPosition.y) {
+	// 			goalLabel.show();
+	// 		} else {
+	// 			goalLabel.hide();
+	// 		}
+	// 	});
+	// 	scene.append(goalLabel);
+
+	// });
+
+	// g.game.pushScene(scene);
+	g.game.pushScene(level.scene);
 }
 
 export = main;

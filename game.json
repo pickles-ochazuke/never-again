@@ -62,6 +62,61 @@
 			"type": "script",
 			"path": "script/domains/background.js",
 			"global": true
+		},
+		"background_entity": {
+			"type": "script",
+			"path": "script/entities/background_entity.js",
+			"global": true
+		},
+		"entity_interface": {
+			"type": "script",
+			"path": "script/interfaces/entity_interface.js",
+			"global": true
+		},
+		"rect_actor": {
+			"type": "script",
+			"path": "script/actors/rect_actor.js",
+			"global": true
+		},
+		"actor": {
+			"type": "script",
+			"path": "script/bases/actor.js",
+			"global": true
+		},
+		"component": {
+			"type": "script",
+			"path": "script/bases/component.js",
+			"global": true
+		},
+		"filled_rect_component": {
+			"type": "script",
+			"path": "script/components/filled_rect_component.js",
+			"global": true
+		},
+		"renderer_component": {
+			"type": "script",
+			"path": "script/components/renderer_component.js",
+			"global": true
+		},
+		"player_actor": {
+			"type": "script",
+			"path": "script/actors/player_actor.js",
+			"global": true
+		},
+		"level": {
+			"type": "script",
+			"path": "script/bases/level.js",
+			"global": true
+		},
+		"player_component": {
+			"type": "script",
+			"path": "script/components/player_component.js",
+			"global": true
+		},
+		"transform_component": {
+			"type": "script",
+			"path": "script/components/transform_component.js",
+			"global": true
 		}
 	},
 	"environment": {

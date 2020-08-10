@@ -5,7 +5,8 @@
     "module": "commonjs" ,
     "outDir": "script",
     "types" : [],
-    "strict": true
+    "strict": true,
+    "sourceMap": true
   },
   "files": [
     "node_modules/@akashic/akashic-engine/lib/main.d.ts"

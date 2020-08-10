@@ -29,4 +29,11 @@ export class Vector2 {
 		this._x = vector._x;
 		this._y = vector._y;
 	}
+
+	/**
+	 * 逆ベクトルを返す
+	 */
+	inverse(): Vector2 {
+		return new Vector2(-this._x, -this._y);
+	}
 }
