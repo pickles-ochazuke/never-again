@@ -3,6 +3,7 @@ import { TransformComponent } from "../components/transform_component";
 import { Block } from "../domains/block";
 import { Vector2 } from "../domains/vector2";
 import { PlayerComponent } from "../components/player_component";
+import { Level } from "../bases/level";
 
 export class PlayerActor extends Actor {
 
@@ -30,8 +31,8 @@ export class PlayerActor extends Actor {
   // シーン内のブロック（ブロックの数は、シーン内で固定）
   private blocks: Block[] = [];
 
-  constructor(scene: g.Scene) {
-    super(scene);
+  constructor(level: Level) {
+    super(level);
 
     this.transform = new TransformComponent(this);
     this.addComponent(this.transform);

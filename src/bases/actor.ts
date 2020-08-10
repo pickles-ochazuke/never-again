@@ -1,4 +1,5 @@
 import { Component } from "./component";
+import { Level } from "./level";
 
 export abstract class Actor {
 	// このアクターで毎フレーム更新するために必要
@@ -6,25 +7,25 @@ export abstract class Actor {
 	protected _entity: g.E;
 
 	// このアクターが登録されているシーン
-	private _scene: g.Scene;
-	get scene(): g.Scene {
-		return this._scene;
+	private _level: Level;
+	get level(): Level {
+		return this._level;
 	}
 
 	// このアクターに登録されているコンポーネントたち
 	private components: Component[] = [];
 
-	constructor(scene: g.Scene) {
-		this._scene = scene;
+	constructor(level: Level) {
+		this._level = level;
 
 		// シーンに登録するために、必ず g.E のインスタンスが必要
-		this._entity = new g.E({ scene: this.scene });
+		this._entity = new g.E({ scene: this.level.scene });
 
 		// 更新処理を登録する（ラムダ式にしてるのは、このインスタンスをクロージャで保持するため）
 		this._entity.update.add(() => this.update());
 
 		// シーンに追加する（エンティティを登録することは、このインスタンスを登録することを意味する）
-		this.scene.append(this._entity);
+		this.level.append(this._entity);
 	}
 
 	/**

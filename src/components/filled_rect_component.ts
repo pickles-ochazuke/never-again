@@ -13,7 +13,7 @@ export class FilledRectComponent extends RendererComponent {
 
 	generate(): g.E {
 		return new g.FilledRect({
-			scene: this.scene,
+			scene: this.level.scene,
 			cssColor: "#ff0000",
 			width: 32,
 			height: 32

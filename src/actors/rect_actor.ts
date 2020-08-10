@@ -1,10 +1,11 @@
 import { Actor } from "../bases/actor";
 import { FilledRectComponent } from "../components/filled_rect_component";
+import { Level } from "../bases/level";
 
 export class RectActor extends Actor {
 
-	constructor(scene: g.Scene) {
-		super(scene);
+	constructor(level: Level) {
+		super(level);
 
 		this.addComponent(new FilledRectComponent(this));
 	}
