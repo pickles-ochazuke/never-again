@@ -1,6 +1,6 @@
 import { Actor } from "../bases/actor";
 import { TransformComponent } from "../components/transform_component";
-import { Vector2 } from "../domains/vector2";
+import { Vector2 } from "../utils/vector2";
 import { PlayerComponent } from "../components/player_component";
 import { Level } from "../bases/level";
 import { BlockActor } from "./block_actor";

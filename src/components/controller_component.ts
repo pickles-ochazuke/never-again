@@ -1,5 +1,5 @@
 import { RendererComponent } from "./renderer_component";
-import { Vector2 } from "../domains/vector2";
+import { Vector2 } from "../utils/vector2";
 import { PlayerActor } from "../actors/player_actor";
 import { ControllerActor } from "../actors/controller_actor";
 

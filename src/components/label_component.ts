@@ -5,7 +5,7 @@ export class LabelComponent extends RendererComponent {
 
   private font!: g.DynamicFont;
   private label!: g.Label;
-  private visible: boolean = true;
+  private visible: boolean = false;
 
   constructor(actor: Actor, str: string) {
     super(actor);
@@ -43,7 +43,7 @@ export class LabelComponent extends RendererComponent {
 			font: this.font,
 			text: "SSSS",
 			fontSize: 32,
-			textColor: "White"
+      textColor: "White"
     });
     
     return this.label;

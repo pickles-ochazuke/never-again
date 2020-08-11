@@ -7,7 +7,7 @@ import { BlockComponent } from "../components/block_component";
 import { BlockActor } from "../actors/block_actor";
 import { MetaDataRepositoryInterface } from "../interfaces/meta_data_repository_interface";
 import { JsonRepository } from "../repositories/json_repository";
-import { Vector2 } from "../domains/vector2";
+import { Vector2 } from "../utils/vector2";
 import { StartEventActor } from "../actors/start_event_actor";
 import { GoalEventActor } from "../actors/goal_event_actor";
 

@@ -3,7 +3,7 @@ import { Level } from "../bases/level";
 import { PlayerActor } from "./player_actor";
 import { LabelComponent } from "../components/label_component";
 import { TransformComponent } from "../components/transform_component";
-import { Vector2 } from "../domains/vector2";
+import { Vector2 } from "../utils/vector2";
 
 export class GoalEventActor extends Actor {
 

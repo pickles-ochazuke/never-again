@@ -4,36 +4,6 @@
 	"fps": 30,
 	"main": "./script/main.js",
 	"assets": {
-		"block": {
-			"type": "script",
-			"path": "script/domains/block.js",
-			"global": true
-		},
-		"controller": {
-			"type": "script",
-			"path": "script/domains/controller.js",
-			"global": true
-		},
-		"game": {
-			"type": "script",
-			"path": "script/domains/game.js",
-			"global": true
-		},
-		"player": {
-			"type": "script",
-			"path": "script/domains/player.js",
-			"global": true
-		},
-		"ui": {
-			"type": "script",
-			"path": "script/domains/ui.js",
-			"global": true
-		},
-		"vector2": {
-			"type": "script",
-			"path": "script/domains/vector2.js",
-			"global": true
-		},
 		"meta_data_repository_interface": {
 			"type": "script",
 			"path": "script/interfaces/meta_data_repository_interface.js",
@@ -44,11 +14,6 @@
 			"path": "script/main.js",
 			"global": true
 		},
-		"meta_block": {
-			"type": "script",
-			"path": "script/meta_block.js",
-			"global": true
-		},
 		"json_repository": {
 			"type": "script",
 			"path": "script/repositories/json_repository.js",
@@ -57,21 +22,6 @@
 		"stage1": {
 			"type": "text",
 			"path": "text/stage1.json"
-		},
-		"background": {
-			"type": "script",
-			"path": "script/domains/background.js",
-			"global": true
-		},
-		"background_entity": {
-			"type": "script",
-			"path": "script/entities/background_entity.js",
-			"global": true
-		},
-		"entity_interface": {
-			"type": "script",
-			"path": "script/interfaces/entity_interface.js",
-			"global": true
 		},
 		"rect_actor": {
 			"type": "script",
@@ -171,6 +121,16 @@
 		"goal_event_actor": {
 			"type": "script",
 			"path": "script/actors/goal_event_actor.js",
+			"global": true
+		},
+		"vector2": {
+			"type": "script",
+			"path": "script/utils/vector2.js",
+			"global": true
+		},
+		"meta_block": {
+			"type": "script",
+			"path": "script/enities/meta_block.js",
 			"global": true
 		}
 	},

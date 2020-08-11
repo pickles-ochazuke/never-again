@@ -1,5 +1,5 @@
 import { Component } from "../bases/component";
-import { Vector2 } from "../domains/vector2";
+import { Vector2 } from "../utils/vector2";
 
 export class TransformComponent extends Component {
 
