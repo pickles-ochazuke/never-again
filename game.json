@@ -18,7 +18,7 @@
 			"type": "audio",
 			"path": "audio/open",
 			"systemId": "sound",
-			"duration": 328
+			"duration": 3356
 		},
 		"walk": {
 			"type": "audio",
@@ -173,6 +173,18 @@
 			"type": "script",
 			"path": "script/utils/vector2.js",
 			"global": true
+		},
+		"gameover_bgm": {
+			"type": "audio",
+			"path": "audio/gameover_bgm",
+			"systemId": "music",
+			"duration": 88813
+		},
+		"goal_bgm": {
+			"type": "audio",
+			"path": "audio/goal_bgm",
+			"systemId": "music",
+			"duration": 33829
 		}
 	},
 	"environment": {

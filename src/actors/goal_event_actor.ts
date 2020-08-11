@@ -34,6 +34,7 @@ export class GoalEventActor extends Actor {
       if (!this.sounded) {
         (this.level.scene.assets["goal"] as g.AudioAsset).play();
         this.sounded = true;
+        this.level.goal = true;
       }
     } else {
       this.label.hide();

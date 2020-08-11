@@ -39,6 +39,8 @@ export class Level {
     return this._gameover;
   }
 
+  goal = false;
+
   // このシーンに登場するアクター
   private actors: Actor[] = [];
 
@@ -62,7 +64,9 @@ export class Level {
         "gameover",
         "goal",
         "open",
-        "walk"
+        "walk",
+        "gameover_bgm",
+        "goal_bgm"
       ]
     });
   }
@@ -141,6 +145,13 @@ export class Level {
       if (this.gameover && !this.sounded) {
         (this.scene.assets["bgm"] as g.AudioAsset).stop();
         (this.scene.assets["gameover"] as g.AudioAsset).play();
+        (this.scene.assets["gameover_bgm"] as g.AudioAsset).play();
+        this.sounded = true;
+      }
+
+      if (this.goal && !this.sounded) {
+        (this.scene.assets["bgm"] as g.AudioAsset).stop();
+        (this.scene.assets["goal_bgm"] as g.AudioAsset).play();
         this.sounded = true;
       }
     })
