@@ -10,6 +10,7 @@ import { JsonRepository } from "../repositories/json_repository";
 import { Vector2 } from "../utils/vector2";
 import { StartEventActor } from "../actors/start_event_actor";
 import { GoalEventActor } from "../actors/goal_event_actor";
+import { GoalBlockActor } from "../actors/goal_block_actor";
 
 export class Level {
 
@@ -28,8 +29,19 @@ export class Level {
     return this._scene;
   }
 
+  private _player!: PlayerActor;
+  get player() {
+    return this._player;
+  }
+
   // このシーンに登場するアクター
   private actors: Actor[] = [];
+
+  // 床
+  private floor!: FloorActor;
+
+  // 通過すべき座標
+  private stepedOns: Vector2[] = [];
 
   constructor() {
 
@@ -45,11 +57,15 @@ export class Level {
       this._entity = new g.E({scene: this.scene});
 
       this.actors.push(new BackgroundActor(this));
-      this.actors.push(new FloorActor(this));
+
+      this.floor = new FloorActor(this);
+      this.actors.push(this.floor);
       
       const repository: MetaDataRepositoryInterface = new JsonRepository(this.scene);
       const metas = repository.fetchMetaBlocks("stage1");
-      metas.forEach(meta => this.actors.push(new BlockActor(this, meta.position.x, meta.position.y)));
+      const blocks: BlockActor[] = [];
+      metas.forEach(meta => blocks.push(new BlockActor(this, meta.position.x, meta.position.y)));
+      this.actors.push(...blocks);
 
       // スタートとゴールを作成
       // スタートとゴールは常に真ん中の下と上にする。
@@ -60,9 +76,14 @@ export class Level {
       const walls: BlockActor[] = this.generateWalls(15, 14, startPosition, goalPosition);
       walls.forEach(wall => this.actors.push(wall));
 
-      const player = new PlayerActor(this);
-      player.move(startPosition);
-      this.actors.push(player);
+      const goalBlock = new GoalBlockActor(this, goalPosition.x, goalPosition.y + 1);
+      this.actors.push(goalBlock);
+      walls.push(goalBlock);
+
+      this._player = new PlayerActor(this);
+      this.player.move(startPosition);
+      this.actors.push(this.player);
+
 
       const controller = new ControllerActor(this, g.game.width, g.game.height * 0.3);
       controller.setPosition(0, g.game.height * 0.7);
@@ -73,6 +94,26 @@ export class Level {
 
       const goalEvent = new GoalEventActor(this, goalPosition.x, goalPosition.y);
       this.actors.push(goalEvent);
+
+      // 通らなくて良い場所
+      const notSteps: Vector2[] = [
+        ...blocks.map(block => new Vector2(block.x, block.y)),
+        ...walls.map(wall => new Vector2(wall.x, wall.y)),
+        startPosition,
+        goalPosition
+      ];
+
+      // 全ての道を出す
+      for (let y = 0; y < 14; y++) {
+        for (let x = 0; x < 15; x++) {
+          this.stepedOns.push(new Vector2(x, y));
+        }
+      }
+      // ブロックやスタートとゴールがあるところは除く
+      this.stepedOns = this.stepedOns.filter(el => {
+        const found = notSteps.some(step => step.x === el.x && step.y === el.y);
+        return !found; // notSteps にない場所は、通過すべき場所
+      });
 
       this.scene.append(this._entity);
     });
@@ -105,5 +146,25 @@ export class Level {
       }
     }
     return ary;
+  }
+
+  // 通過すべき場所を全て通過しているなら true を返す
+  isAllStepedOn(): boolean {
+
+    let bool = false;
+    for (const index in this.stepedOns) {
+      const condition = (it: Vector2) => (it.x === this.stepedOns[index].x) && (it.y === this.stepedOns[index].y);
+
+      bool = this.player.stepedOns.some(condition);
+
+      if (!bool) {
+        break;
+      }
+    }
+    return bool;
+  }
+
+  stepOn(position: Vector2) {
+    this.floor.stepedOn(position);
   }
 }

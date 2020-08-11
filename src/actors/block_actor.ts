@@ -6,7 +6,11 @@ import { Vector2 } from "../utils/vector2";
 
 export class BlockActor extends Actor {
 
-  private block: BlockComponent;
+  protected block: BlockComponent;
+
+  get activated() {
+    return this.block.activated;
+  }
 
   private transform: TransformComponent;
   get x() {

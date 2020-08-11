@@ -4,8 +4,16 @@ import { Actor } from "../bases/actor";
 export class FloorComponent extends RendererComponent {
 
   private entity!: g.E;
-  private frame: g.FilledRect | null = null;
-  private filled: g.FilledRect | null = null;
+  private frame!: g.FilledRect;
+  private filled!: g.FilledRect;
+
+  get x() {
+    return this.entity.x / 32;
+  }
+
+  get y() {
+    return this.entity.y / 32;
+  }
 
   constructor(actor: Actor) {
     super(actor);
@@ -49,5 +57,9 @@ export class FloorComponent extends RendererComponent {
     this.entity.append(this.filled);
 
     return this.entity;
+  }
+
+  steped() {
+    this.filled.cssColor = "#800000";
   }
 }

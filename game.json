@@ -132,6 +132,11 @@
 			"type": "script",
 			"path": "script/enities/meta_block.js",
 			"global": true
+		},
+		"goal_block_actor": {
+			"type": "script",
+			"path": "script/actors/goal_block_actor.js",
+			"global": true
 		}
 	},
 	"environment": {

@@ -31,6 +31,12 @@ export class PlayerActor extends Actor {
   // シーン内のブロック（ブロックの数は、シーン内で固定）
   private blocks: BlockActor[] = [];
 
+  // プレイヤーが歩いたところ
+  private _stepedOns: Vector2[] = [];
+  get stepedOns() {
+    return this._stepedOns;
+  }
+
   constructor(level: Level) {
     super(level);
 
@@ -50,12 +56,15 @@ export class PlayerActor extends Actor {
     this.transform.move(this.vector);
 
 		// 衝突判定
-		this.blocks.forEach(block => {
+		this.blocks.filter(block => block.activated).forEach(block => {
       // ぶつかっていたら元の場所に戻る
 			if (this.isInto(block)) {
 				this.transform.move(this.vector.inverse());
 			}
 		});
+
+    // 歩いたところを記録する
+    this.addStepedOn(this.x, this.y);
 
     this.vector.initialize();
     this.positionUpdate();
@@ -79,5 +88,19 @@ export class PlayerActor extends Actor {
   private positionUpdate() {
 		this._entity.x = this.x * this._entity.width;
 		this._entity.y = this.y * this._entity.height;
-	}
+  }
+  
+  private addStepedOn(x: number, y: number): void {
+
+    // すでに同じ場所を通っている場合は、追加しない
+    for (const index in this._stepedOns) {
+      if (this._stepedOns[index].x === x && this._stepedOns[index].y === y) {
+        return;
+      }
+    }
+
+    const position = new Vector2(x, y);
+    this._stepedOns.push(position);
+    this.level.stepOn(position);
+  }
 }

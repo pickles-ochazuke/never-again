@@ -2,6 +2,12 @@ import { RendererComponent } from "./renderer_component";
 
 export class BlockComponent extends RendererComponent {
   
+  // trueならぶつかる
+  private _activated = true;
+  get activated() {
+    return this._activated;
+  }
+
   private _width = 32;
   get width() {
     return this._width;
@@ -24,4 +30,15 @@ export class BlockComponent extends RendererComponent {
 			height: 32
 		});
   }
+
+  activate() {
+    this._activated = true;
+    this._entity.show();
+  }
+
+  deactivate() {
+    this._activated = false;
+    this._entity.hide();
+  }
+
 }

@@ -1,6 +1,7 @@
 import { Actor } from "../bases/actor";
 import { Level } from "../bases/level";
 import { FloorComponent } from "../components/floor_component";
+import { Vector2 } from "../utils/vector2";
 
 export class FloorActor extends Actor {
 
@@ -21,5 +22,10 @@ export class FloorActor extends Actor {
   
   updateActor(): void {
     // 何もしない
+  }
+
+  stepedOn(position: Vector2) {
+    const floor = this.floors.filter(floor => floor.x === position.x && floor.y === position.y);
+    floor[0].steped();
   }
 }
