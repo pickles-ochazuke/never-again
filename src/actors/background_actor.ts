@@ -10,6 +10,7 @@ export class BackgroundActor extends Actor {
     super(level);
 
     this.background = new BackgroundComponent(this);
+    this.addComponent(this.background);
   }
 
   updateActor(): void {

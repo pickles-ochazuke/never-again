@@ -1,6 +1,7 @@
 import { PlayerActor } from "../actors/player_actor";
 import { Actor } from "./actor";
 import { BackgroundActor } from "../actors/background_actor";
+import { FloorActor } from "../actors/floor_actor";
 
 export class Level {
 
@@ -36,7 +37,9 @@ export class Level {
       this._entity = new g.E({scene: this.scene});
 
       this.actors.push(new BackgroundActor(this));
+      this.actors.push(new FloorActor(this));
       this.actors.push(new PlayerActor(this));
+
       this.scene.append(this._entity);
     });
   }

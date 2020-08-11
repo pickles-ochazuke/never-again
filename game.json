@@ -127,6 +127,16 @@
 			"type": "script",
 			"path": "script/components/backgound_component.js",
 			"global": true
+		},
+		"floor_actor": {
+			"type": "script",
+			"path": "script/actors/floor_actor.js",
+			"global": true
+		},
+		"floor_component": {
+			"type": "script",
+			"path": "script/components/floor_component.js",
+			"global": true
 		}
 	},
 	"environment": {
