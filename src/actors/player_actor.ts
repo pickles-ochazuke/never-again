@@ -1,9 +1,9 @@
 import { Actor } from "../bases/actor";
 import { TransformComponent } from "../components/transform_component";
-import { Block } from "../domains/block";
 import { Vector2 } from "../domains/vector2";
 import { PlayerComponent } from "../components/player_component";
 import { Level } from "../bases/level";
+import { BlockActor } from "./block_actor";
 
 export class PlayerActor extends Actor {
 
@@ -29,7 +29,7 @@ export class PlayerActor extends Actor {
 	private vector = new Vector2();
 
   // シーン内のブロック（ブロックの数は、シーン内で固定）
-  private blocks: Block[] = [];
+  private blocks: BlockActor[] = [];
 
   constructor(level: Level) {
     super(level);
@@ -41,6 +41,8 @@ export class PlayerActor extends Actor {
     this.addComponent(this.transform);
     this.player = new PlayerComponent(this);
     this.addComponent(this.player);
+
+    this.blocks = this.level.filterActors<BlockActor>((a): a is BlockActor => a instanceof BlockActor);
   }
 
   updateActor(): void {
@@ -63,7 +65,7 @@ export class PlayerActor extends Actor {
    * 壁とぶつかっているならtrueを返す
    * @param block 確認する対象
    */
-  isInto(block: Block): boolean {
+  isInto(block: BlockActor): boolean {
     return (this.position.x === block.x) && (this.position.y === block.y)
   }
 

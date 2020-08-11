@@ -9,6 +9,13 @@ export class BlockActor extends Actor {
   private block: BlockComponent;
 
   private transform: TransformComponent;
+  get x() {
+    return this.transform.position.x;
+  }
+
+  get y() {
+    return this.transform.position.y;
+  }
 
   constructor(level: Level, x: number, y: number) {
     super(level);
