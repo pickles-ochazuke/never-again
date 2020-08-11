@@ -147,6 +147,16 @@
 			"type": "script",
 			"path": "script/components/controller_component.js",
 			"global": true
+		},
+		"block_actor": {
+			"type": "script",
+			"path": "script/actors/block_actor.js",
+			"global": true
+		},
+		"block_component": {
+			"type": "script",
+			"path": "script/components/block_component.js",
+			"global": true
 		}
 	},
 	"environment": {
