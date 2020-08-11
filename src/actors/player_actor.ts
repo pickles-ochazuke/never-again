@@ -34,6 +34,9 @@ export class PlayerActor extends Actor {
   constructor(level: Level) {
     super(level);
 
+    this._entity.width = 32;
+    this._entity.height = 32;
+
     this.transform = new TransformComponent(this);
     this.addComponent(this.transform);
     this.player = new PlayerComponent(this);
@@ -62,6 +65,10 @@ export class PlayerActor extends Actor {
    */
   isInto(block: Block): boolean {
     return (this.position.x === block.x) && (this.position.y === block.y)
+  }
+
+  move(value: Vector2) {
+    this.vector = value;
   }
 
   /**

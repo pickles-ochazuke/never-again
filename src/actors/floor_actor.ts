@@ -9,7 +9,7 @@ export class FloorActor extends Actor {
   constructor(level: Level) {
     super(level);
 
-    for (let y = 0; y < 16; y++) {
+    for (let y = 0; y < 14; y++) {
       for (let x = 0; x < 15; x++) {
         const floor = new FloorComponent(this);
         floor.setPosition(x*32, y*32);

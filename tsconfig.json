@@ -6,7 +6,7 @@
     "outDir": "script",
     "types" : [],
     "strict": true,
-    "sourceMap": true
+    // "sourceMap": true
   },
   "files": [
     "node_modules/@akashic/akashic-engine/lib/main.d.ts"

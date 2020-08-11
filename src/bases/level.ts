@@ -2,6 +2,7 @@ import { PlayerActor } from "../actors/player_actor";
 import { Actor } from "./actor";
 import { BackgroundActor } from "../actors/background_actor";
 import { FloorActor } from "../actors/floor_actor";
+import { ControllerActor } from "../actors/controller_actor";
 
 export class Level {
 
@@ -40,11 +41,19 @@ export class Level {
       this.actors.push(new FloorActor(this));
       this.actors.push(new PlayerActor(this));
 
+      const controller = new ControllerActor(this, g.game.width, g.game.height * 0.3);
+      controller.setPosition(0, g.game.height * 0.7);
+      this.actors.push(controller)
+
       this.scene.append(this._entity);
     });
   }
 
   append(entity: g.E) {
     this._entity?.append(entity);
+  }
+
+  filterActors<T extends Actor>(isType: (a: Actor) => a is T): T[] {
+    return this.actors.filter(isType);
   }
 }

@@ -137,6 +137,16 @@
 			"type": "script",
 			"path": "script/components/floor_component.js",
 			"global": true
+		},
+		"controller_actor": {
+			"type": "script",
+			"path": "script/actors/controller_actor.js",
+			"global": true
+		},
+		"controller_component": {
+			"type": "script",
+			"path": "script/components/controller_component.js",
+			"global": true
 		}
 	},
 	"environment": {

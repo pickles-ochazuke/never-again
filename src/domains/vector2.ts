@@ -26,8 +26,8 @@ export class Vector2 {
 	}
 
 	plus(vector: Vector2) {
-		this._x = vector._x;
-		this._y = vector._y;
+		this._x += vector._x;
+		this._y += vector._y;
 	}
 
 	/**
