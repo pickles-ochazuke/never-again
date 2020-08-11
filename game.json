@@ -157,6 +157,21 @@
 			"type": "script",
 			"path": "script/components/block_component.js",
 			"global": true
+		},
+		"start_event_actor": {
+			"type": "script",
+			"path": "script/actors/start_event_actor.js",
+			"global": true
+		},
+		"label_component": {
+			"type": "script",
+			"path": "script/components/label_component.js",
+			"global": true
+		},
+		"goal_event_actor": {
+			"type": "script",
+			"path": "script/actors/goal_event_actor.js",
+			"global": true
 		}
 	},
 	"environment": {
