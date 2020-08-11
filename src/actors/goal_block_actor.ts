@@ -3,6 +3,8 @@ import { BlockActor } from "./block_actor";
 
 export class GoalBlockActor extends BlockActor {
 
+  private sounded = false;
+
   constructor(level: Level, x: number, y: number) {
     super(level, x, y);
   }
@@ -11,6 +13,11 @@ export class GoalBlockActor extends BlockActor {
     // プレイヤーが通過すべき場所を全て通過していたら非活性にする
     if (this.level.isAllStepedOn()) {
       this.block.deactivate();
+      
+      if (!this.sounded) {
+        (this.level.scene.assets["open"] as g.AudioAsset).play();
+        this.sounded = true;
+      }
     }
   }
 }

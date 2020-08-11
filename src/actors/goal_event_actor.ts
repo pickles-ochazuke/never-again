@@ -11,6 +11,8 @@ export class GoalEventActor extends Actor {
   private player: PlayerActor;
   private label: LabelComponent;
 
+  private sounded = false;
+
   constructor(level: Level, x: number, y: number) {
     super(level);
 
@@ -28,8 +30,14 @@ export class GoalEventActor extends Actor {
   updateActor(): void {
     if (this.player.x === this.transform.position.x && this.player.y === this.transform.position.y) {
       this.label.show();
+      
+      if (!this.sounded) {
+        (this.level.scene.assets["goal"] as g.AudioAsset).play();
+        this.sounded = true;
+      }
     } else {
       this.label.hide();
     }
+    
   }
 }

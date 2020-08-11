@@ -37,6 +37,8 @@ export class PlayerActor extends Actor {
     return this._stepedOns;
   }
 
+  moved = false;
+
   constructor(level: Level) {
     super(level);
 
@@ -54,18 +56,24 @@ export class PlayerActor extends Actor {
   updateActor(): void {
 
     this.transform.move(this.vector);
-
+    const length = (this.vector.x * this.vector.x) + (this.vector.y * this.vector.y)
+    if (length > 0) {
+      this.moved = true;
+    }
+    
 		// 衝突判定
 		this.blocks.filter(block => block.activated).forEach(block => {
       // ぶつかっていたら元の場所に戻る
 			if (this.isInto(block)) {
-				this.transform.move(this.vector.inverse());
+        this.transform.move(this.vector.inverse());
+        this.moved = false;
 			}
 		});
 
     // 歩いたところを記録する
     this.addStepedOn(this.x, this.y);
 
+    this.moved = false;
     this.vector.initialize();
     this.positionUpdate();
   }
@@ -87,7 +95,7 @@ export class PlayerActor extends Actor {
    */
   private positionUpdate() {
 		this._entity.x = this.x * this._entity.width;
-		this._entity.y = this.y * this._entity.height;
+    this._entity.y = this.y * this._entity.height;
   }
   
   private addStepedOn(x: number, y: number): void {
@@ -95,6 +103,9 @@ export class PlayerActor extends Actor {
     // すでに同じ場所を通っている場合は、追加しない
     for (const index in this._stepedOns) {
       if (this._stepedOns[index].x === x && this._stepedOns[index].y === y) {
+        if (this.moved) {
+          this.level.onGameover();
+        }
         return;
       }
     }

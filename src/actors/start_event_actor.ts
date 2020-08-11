@@ -10,6 +10,7 @@ export class StartEventActor extends Actor {
   private transform: TransformComponent;
   private player: PlayerActor;
   private label: LabelComponent;
+  private started = false;
 
   constructor(level: Level, x: number, y: number) {
     super(level);
@@ -26,6 +27,12 @@ export class StartEventActor extends Actor {
   }
 
   updateActor(): void {
+
+    if (!this.started) {
+      (this.level.scene.assets["start"] as g.AudioAsset).play();
+      this.started = true;
+    }
+    
     if (this.player.x === this.transform.position.x && this.player.y === this.transform.position.y) {
       this.label.show();
     } else {

@@ -34,6 +34,11 @@ export class Level {
     return this._player;
   }
 
+  private _gameover = false;
+  get gameover() {
+    return this._gameover;
+  }
+
   // このシーンに登場するアクター
   private actors: Actor[] = [];
 
@@ -43,11 +48,22 @@ export class Level {
   // 通過すべき座標
   private stepedOns: Vector2[] = [];
 
+  private sounded = false;
+
   constructor() {
 
     this._scene = new g.Scene({
       game: g.game,
-      assetIds: ["stage1"]
+      assetIds: [
+        "stage1",
+        "bgm",
+        "start",
+        "walk",
+        "gameover",
+        "goal",
+        "open",
+        "walk"
+      ]
     });
   }
 
@@ -116,7 +132,18 @@ export class Level {
       });
 
       this.scene.append(this._entity);
+
+      // ゲームの開始を告げる音と音楽を鳴らす
+      this.gameStart();
     });
+
+    this.scene.update.add(() => {
+      if (this.gameover && !this.sounded) {
+        (this.scene.assets["bgm"] as g.AudioAsset).stop();
+        (this.scene.assets["gameover"] as g.AudioAsset).play();
+        this.sounded = true;
+      }
+    })
   }
 
   append(entity: g.E) {
@@ -166,5 +193,13 @@ export class Level {
 
   stepOn(position: Vector2) {
     this.floor.stepedOn(position);
+  }
+
+  onGameover() {
+    this._gameover = true;
+  }
+
+  private gameStart() {
+    (this.scene.assets["bgm"] as g.AudioAsset).play();
   }
 }

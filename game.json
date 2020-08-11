@@ -4,6 +4,156 @@
 	"fps": 30,
 	"main": "./script/main.js",
 	"assets": {
+		"stage1": {
+			"type": "text",
+			"path": "text/stage1.json"
+		},
+		"bgm": {
+			"type": "audio",
+			"path": "audio/bgm",
+			"systemId": "music",
+			"duration": 50127
+		},
+		"open": {
+			"type": "audio",
+			"path": "audio/open",
+			"systemId": "sound",
+			"duration": 328
+		},
+		"walk": {
+			"type": "audio",
+			"path": "audio/walk",
+			"systemId": "sound",
+			"duration": 362
+		},
+		"start": {
+			"type": "audio",
+			"path": "audio/start",
+			"systemId": "sound",
+			"duration": 1014
+		},
+		"gameover": {
+			"type": "audio",
+			"path": "audio/gameover",
+			"systemId": "sound",
+			"duration": 3530
+		},
+		"goal": {
+			"type": "audio",
+			"path": "audio/goal",
+			"systemId": "sound",
+			"duration": 2534
+		},
+		"background_actor": {
+			"type": "script",
+			"path": "script/actors/background_actor.js",
+			"global": true
+		},
+		"block_actor": {
+			"type": "script",
+			"path": "script/actors/block_actor.js",
+			"global": true
+		},
+		"controller_actor": {
+			"type": "script",
+			"path": "script/actors/controller_actor.js",
+			"global": true
+		},
+		"floor_actor": {
+			"type": "script",
+			"path": "script/actors/floor_actor.js",
+			"global": true
+		},
+		"goal_block_actor": {
+			"type": "script",
+			"path": "script/actors/goal_block_actor.js",
+			"global": true
+		},
+		"goal_event_actor": {
+			"type": "script",
+			"path": "script/actors/goal_event_actor.js",
+			"global": true
+		},
+		"player_actor": {
+			"type": "script",
+			"path": "script/actors/player_actor.js",
+			"global": true
+		},
+		"rect_actor": {
+			"type": "script",
+			"path": "script/actors/rect_actor.js",
+			"global": true
+		},
+		"start_event_actor": {
+			"type": "script",
+			"path": "script/actors/start_event_actor.js",
+			"global": true
+		},
+		"actor": {
+			"type": "script",
+			"path": "script/bases/actor.js",
+			"global": true
+		},
+		"component": {
+			"type": "script",
+			"path": "script/bases/component.js",
+			"global": true
+		},
+		"level": {
+			"type": "script",
+			"path": "script/bases/level.js",
+			"global": true
+		},
+		"backgound_component": {
+			"type": "script",
+			"path": "script/components/backgound_component.js",
+			"global": true
+		},
+		"block_component": {
+			"type": "script",
+			"path": "script/components/block_component.js",
+			"global": true
+		},
+		"controller_component": {
+			"type": "script",
+			"path": "script/components/controller_component.js",
+			"global": true
+		},
+		"filled_rect_component": {
+			"type": "script",
+			"path": "script/components/filled_rect_component.js",
+			"global": true
+		},
+		"floor_component": {
+			"type": "script",
+			"path": "script/components/floor_component.js",
+			"global": true
+		},
+		"label_component": {
+			"type": "script",
+			"path": "script/components/label_component.js",
+			"global": true
+		},
+		"player_component": {
+			"type": "script",
+			"path": "script/components/player_component.js",
+			"global": true
+		},
+		"renderer_component": {
+			"type": "script",
+			"path": "script/components/renderer_component.js",
+			"global": true
+		},
+		"transform_component": {
+			"type": "script",
+			"path": "script/components/transform_component.js",
+			"global": true
+		},
+		"meta_block": {
+			"type": "script",
+			"path": "script/enities/meta_block.js",
+			"global": true
+		},
 		"meta_data_repository_interface": {
 			"type": "script",
 			"path": "script/interfaces/meta_data_repository_interface.js",
@@ -19,123 +169,9 @@
 			"path": "script/repositories/json_repository.js",
 			"global": true
 		},
-		"stage1": {
-			"type": "text",
-			"path": "text/stage1.json"
-		},
-		"rect_actor": {
-			"type": "script",
-			"path": "script/actors/rect_actor.js",
-			"global": true
-		},
-		"actor": {
-			"type": "script",
-			"path": "script/bases/actor.js",
-			"global": true
-		},
-		"component": {
-			"type": "script",
-			"path": "script/bases/component.js",
-			"global": true
-		},
-		"filled_rect_component": {
-			"type": "script",
-			"path": "script/components/filled_rect_component.js",
-			"global": true
-		},
-		"renderer_component": {
-			"type": "script",
-			"path": "script/components/renderer_component.js",
-			"global": true
-		},
-		"player_actor": {
-			"type": "script",
-			"path": "script/actors/player_actor.js",
-			"global": true
-		},
-		"level": {
-			"type": "script",
-			"path": "script/bases/level.js",
-			"global": true
-		},
-		"player_component": {
-			"type": "script",
-			"path": "script/components/player_component.js",
-			"global": true
-		},
-		"transform_component": {
-			"type": "script",
-			"path": "script/components/transform_component.js",
-			"global": true
-		},
-		"background_actor": {
-			"type": "script",
-			"path": "script/actors/background_actor.js",
-			"global": true
-		},
-		"backgound_component": {
-			"type": "script",
-			"path": "script/components/backgound_component.js",
-			"global": true
-		},
-		"floor_actor": {
-			"type": "script",
-			"path": "script/actors/floor_actor.js",
-			"global": true
-		},
-		"floor_component": {
-			"type": "script",
-			"path": "script/components/floor_component.js",
-			"global": true
-		},
-		"controller_actor": {
-			"type": "script",
-			"path": "script/actors/controller_actor.js",
-			"global": true
-		},
-		"controller_component": {
-			"type": "script",
-			"path": "script/components/controller_component.js",
-			"global": true
-		},
-		"block_actor": {
-			"type": "script",
-			"path": "script/actors/block_actor.js",
-			"global": true
-		},
-		"block_component": {
-			"type": "script",
-			"path": "script/components/block_component.js",
-			"global": true
-		},
-		"start_event_actor": {
-			"type": "script",
-			"path": "script/actors/start_event_actor.js",
-			"global": true
-		},
-		"label_component": {
-			"type": "script",
-			"path": "script/components/label_component.js",
-			"global": true
-		},
-		"goal_event_actor": {
-			"type": "script",
-			"path": "script/actors/goal_event_actor.js",
-			"global": true
-		},
 		"vector2": {
 			"type": "script",
 			"path": "script/utils/vector2.js",
-			"global": true
-		},
-		"meta_block": {
-			"type": "script",
-			"path": "script/enities/meta_block.js",
-			"global": true
-		},
-		"goal_block_actor": {
-			"type": "script",
-			"path": "script/actors/goal_block_actor.js",
 			"global": true
 		}
 	},

@@ -124,18 +124,31 @@ export class ControllerComponent extends RendererComponent {
   }
 
   moveRight() {
-		this.player.move(new Vector2(1, 0));
+    if (!this.level.gameover) {
+      this.player.move(new Vector2(1, 0));
+      (this.level.scene.assets["walk"] as g.AudioAsset).play();
+      (this.level.scene.assets["open"] as g.AudioAsset).play();  
+    }
 	}
 
 	moveLeft() {
-		this.player.move(new Vector2(-1, 0));
+    if (!this.level.gameover) {
+      this.player.move(new Vector2(-1, 0));
+      (this.level.scene.assets["walk"] as g.AudioAsset).play();
+    }
 	}
 
 	moveTop() {
-		this.player.move(new Vector2(0, -1));
+    if (!this.level.gameover) {
+      this.player.move(new Vector2(0, -1));
+      (this.level.scene.assets["walk"] as g.AudioAsset).play();
+    }
 	}
 
 	moveBottom() {
-		this.player.move(new Vector2(0, 1));
+    if (!this.level.gameover) {
+      this.player.move(new Vector2(0, 1));
+      (this.level.scene.assets["walk"] as g.AudioAsset).play();
+    }
 	}
 }
