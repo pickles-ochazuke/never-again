@@ -12,13 +12,9 @@ export class FloorComponent extends RendererComponent {
   }
 
   setPosition(x: number, y: number) {
-    // if (this.frame != null && this.filled != null) {
     if (this.entity != null) {
       this.entity.x = x;
       this.entity.y = y;
-  
-      // this.filled.x = x - 1;
-      // this.filled.y = y - 1;
     }
   }
   
