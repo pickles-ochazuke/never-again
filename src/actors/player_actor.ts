@@ -4,6 +4,7 @@ import { Vector2 } from "../utils/vector2";
 import { PlayerComponent } from "../components/player_component";
 import { Level } from "../bases/level";
 import { BlockActor } from "./block_actor";
+import { NeverAgainLevel } from "../levels/never_again_level";
 
 export class PlayerActor extends Actor {
 
@@ -112,6 +113,6 @@ export class PlayerActor extends Actor {
 
     const position = new Vector2(x, y);
     this._stepedOns.push(position);
-    this.level.stepOn(position);
+    (this.level as NeverAgainLevel).stepOn(position);
   }
 }

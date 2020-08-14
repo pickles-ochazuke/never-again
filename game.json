@@ -190,6 +190,11 @@
 			"type": "script",
 			"path": "script/levels/first_leve.js",
 			"global": true
+		},
+		"never_again_level": {
+			"type": "script",
+			"path": "script/levels/never_again_level.js",
+			"global": true
 		}
 	},
 	"environment": {
