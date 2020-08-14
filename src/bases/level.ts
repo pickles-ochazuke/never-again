@@ -63,92 +63,93 @@ export class Level {
       game: game,
       assetIds: this.assetIds
     });
-  }
+
+    this._scene.loaded.add(() => this.initialize());
+    this.scene.update.add(() => this.update());
+    }
 
   initialize(): void {
-    this._scene.loaded.add(() => {
+    this._entity = new g.E({scene: this.scene});
 
-      this._entity = new g.E({scene: this.scene});
+    this.actors.push(new BackgroundActor(this));
 
-      this.actors.push(new BackgroundActor(this));
+    this.floor = new FloorActor(this);
+    this.actors.push(this.floor);
+    
+    const repository: MetaDataRepositoryInterface = new JsonRepository(this.scene);
+    const metas = repository.fetchMetaBlocks("stage1");
+    const blocks: BlockActor[] = [];
+    metas.forEach(meta => blocks.push(new BlockActor(this, meta.position.x, meta.position.y)));
+    this.actors.push(...blocks);
 
-      this.floor = new FloorActor(this);
-      this.actors.push(this.floor);
-      
-      const repository: MetaDataRepositoryInterface = new JsonRepository(this.scene);
-      const metas = repository.fetchMetaBlocks("stage1");
-      const blocks: BlockActor[] = [];
-      metas.forEach(meta => blocks.push(new BlockActor(this, meta.position.x, meta.position.y)));
-      this.actors.push(...blocks);
+    // スタートとゴールを作成
+    // スタートとゴールは常に真ん中の下と上にする。
+    const startPosition: Vector2 = new Vector2(7, 13);
+    const goalPosition: Vector2 = new Vector2(7, 0);
 
-      // スタートとゴールを作成
-      // スタートとゴールは常に真ん中の下と上にする。
-      const startPosition: Vector2 = new Vector2(7, 13);
-      const goalPosition: Vector2 = new Vector2(7, 0);
+    // エリアの外側をブロックで囲む
+    const walls: BlockActor[] = this.generateWalls(15, 14, startPosition, goalPosition);
+    walls.forEach(wall => this.actors.push(wall));
 
-      // エリアの外側をブロックで囲む
-      const walls: BlockActor[] = this.generateWalls(15, 14, startPosition, goalPosition);
-      walls.forEach(wall => this.actors.push(wall));
+    const goalBlock = new GoalBlockActor(this, goalPosition.x, goalPosition.y + 1);
+    this.actors.push(goalBlock);
+    walls.push(goalBlock);
 
-      const goalBlock = new GoalBlockActor(this, goalPosition.x, goalPosition.y + 1);
-      this.actors.push(goalBlock);
-      walls.push(goalBlock);
-
-      this._player = new PlayerActor(this);
-      this.player.move(startPosition);
-      this.actors.push(this.player);
+    this._player = new PlayerActor(this);
+    this.player.move(startPosition);
+    this.actors.push(this.player);
 
 
-      const controller = new ControllerActor(this, g.game.width, g.game.height * 0.3);
-      controller.setPosition(0, g.game.height * 0.7);
-      this.actors.push(controller);
+    const controller = new ControllerActor(this, g.game.width, g.game.height * 0.3);
+    controller.setPosition(0, g.game.height * 0.7);
+    this.actors.push(controller);
 
-      const startEvent = new StartEventActor(this, startPosition.x, startPosition.y);
-      this.actors.push(startEvent);
+    const startEvent = new StartEventActor(this, startPosition.x, startPosition.y);
+    this.actors.push(startEvent);
 
-      const goalEvent = new GoalEventActor(this, goalPosition.x, goalPosition.y);
-      this.actors.push(goalEvent);
+    const goalEvent = new GoalEventActor(this, goalPosition.x, goalPosition.y);
+    this.actors.push(goalEvent);
 
-      // 通らなくて良い場所
-      const notSteps: Vector2[] = [
-        ...blocks.map(block => new Vector2(block.x, block.y)),
-        ...walls.map(wall => new Vector2(wall.x, wall.y)),
-        startPosition,
-        goalPosition
-      ];
+    // 通らなくて良い場所
+    const notSteps: Vector2[] = [
+      ...blocks.map(block => new Vector2(block.x, block.y)),
+      ...walls.map(wall => new Vector2(wall.x, wall.y)),
+      startPosition,
+      goalPosition
+    ];
 
-      // 全ての道を出す
-      for (let y = 0; y < 14; y++) {
-        for (let x = 0; x < 15; x++) {
-          this.stepedOns.push(new Vector2(x, y));
-        }
+    // 全ての道を出す
+    for (let y = 0; y < 14; y++) {
+      for (let x = 0; x < 15; x++) {
+        this.stepedOns.push(new Vector2(x, y));
       }
-      // ブロックやスタートとゴールがあるところは除く
-      this.stepedOns = this.stepedOns.filter(el => {
-        const found = notSteps.some(step => step.x === el.x && step.y === el.y);
-        return !found; // notSteps にない場所は、通過すべき場所
-      });
-
-      this.scene.append(this._entity);
-
-      // ゲームの開始を告げる音と音楽を鳴らす
-      this.gameStart();
+    }
+    // ブロックやスタートとゴールがあるところは除く
+    this.stepedOns = this.stepedOns.filter(el => {
+      const found = notSteps.some(step => step.x === el.x && step.y === el.y);
+      return !found; // notSteps にない場所は、通過すべき場所
     });
 
-    this.scene.update.add(() => {
-      if (this.gameover && !this.sounded) {
-        (this.scene.assets["bgm"] as g.AudioAsset).stop();
-        (this.scene.assets["gameover"] as g.AudioAsset).play();
-        (this.scene.assets["gameover_bgm"] as g.AudioAsset).play();
-        this.sounded = true;
-      }
+    this.scene.append(this._entity);
 
-      if (this.goal && !this.sounded) {
-        (this.scene.assets["bgm"] as g.AudioAsset).stop();
-        (this.scene.assets["goal_bgm"] as g.AudioAsset).play();
-        this.sounded = true;
-      }
-    })
+    // ゲームの開始を告げる音と音楽を鳴らす
+    this.gameStart();
+
+  }
+
+  update(): void {
+    if (this.gameover && !this.sounded) {
+      (this.scene.assets["bgm"] as g.AudioAsset).stop();
+      (this.scene.assets["gameover"] as g.AudioAsset).play();
+      (this.scene.assets["gameover_bgm"] as g.AudioAsset).play();
+      this.sounded = true;
+    }
+
+    if (this.goal && !this.sounded) {
+      (this.scene.assets["bgm"] as g.AudioAsset).stop();
+      (this.scene.assets["goal_bgm"] as g.AudioAsset).play();
+      this.sounded = true;
+    }
   }
 
   append(entity: g.E) {
