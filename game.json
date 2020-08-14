@@ -185,6 +185,11 @@
 			"path": "audio/goal_bgm",
 			"systemId": "music",
 			"duration": 33829
+		},
+		"first_leve": {
+			"type": "script",
+			"path": "script/levels/first_leve.js",
+			"global": true
 		}
 	},
 	"environment": {

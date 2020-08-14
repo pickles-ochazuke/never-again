@@ -3,7 +3,6 @@ import { Actor } from "./actor";
 import { BackgroundActor } from "../actors/background_actor";
 import { FloorActor } from "../actors/floor_actor";
 import { ControllerActor } from "../actors/controller_actor";
-import { BlockComponent } from "../components/block_component";
 import { BlockActor } from "../actors/block_actor";
 import { MetaDataRepositoryInterface } from "../interfaces/meta_data_repository_interface";
 import { JsonRepository } from "../repositories/json_repository";
@@ -14,19 +13,21 @@ import { GoalBlockActor } from "../actors/goal_block_actor";
 
 export class Level {
 
-  private _width = g.game.width;
-  get width() {
-    return this._width;
-  }
-  private _height = g.game.height;
-  get height() {
-    return this._height;
-  }
-
   private _entity: g.E | null = null;
   private _scene: g.Scene;
   get scene() {
     return this._scene;
+  }
+
+  protected assetIds: string[];
+
+  private _width: number;
+  get width() {
+    return this._width;
+  }
+  private _height: number;
+  get height() {
+    return this._height;
   }
 
   private _player!: PlayerActor;
@@ -52,22 +53,15 @@ export class Level {
 
   private sounded = false;
 
-  constructor() {
+  constructor(game: g.Game, assetIds: string[]) {
+
+    this._width = game.width;
+    this._height = game.height;
+    this.assetIds = assetIds;
 
     this._scene = new g.Scene({
-      game: g.game,
-      assetIds: [
-        "stage1",
-        "bgm",
-        "start",
-        "walk",
-        "gameover",
-        "goal",
-        "open",
-        "walk",
-        "gameover_bgm",
-        "goal_bgm"
-      ]
+      game: game,
+      assetIds: this.assetIds
     });
   }
 
