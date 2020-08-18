@@ -3,6 +3,16 @@ import { Actor } from "./actor";
 export abstract class Level {
 
   /**
+   * 1タイルの横幅(pixel)
+   */
+  tileWidth: number = 32;
+
+  /**
+   * 1タイルの縦幅(pixel)
+   */
+  tileHeight: number = 32;
+  
+  /**
    * このレベルのルートエンティティ
    * シーンのロードが終わったときに初めに初期化されるので、
    * null になることはない

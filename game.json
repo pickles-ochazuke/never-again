@@ -195,6 +195,36 @@
 			"type": "script",
 			"path": "script/levels/never_again_level.js",
 			"global": true
+		},
+		"tile_actor": {
+			"type": "script",
+			"path": "script/actors/tile_actor.js",
+			"global": true
+		},
+		"tile_component": {
+			"type": "script",
+			"path": "script/components/tile_component.js",
+			"global": true
+		},
+		"group_actor": {
+			"type": "script",
+			"path": "script/actors/group_actor.js",
+			"global": true
+		},
+		"layer": {
+			"type": "script",
+			"path": "script/bases/layer.js",
+			"global": true
+		},
+		"playground_level": {
+			"type": "script",
+			"path": "script/levels/playground_level.js",
+			"global": true
+		},
+		"utils": {
+			"type": "script",
+			"path": "script/utils/utils.js",
+			"global": true
 		}
 	},
 	"environment": {

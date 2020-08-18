@@ -7,13 +7,13 @@ export class FloorActor extends Actor {
 
   private floors: FloorComponent[] = [];
 
-  constructor(level: Level) {
+  constructor(tileX: number, tileY: number, level: Level) {
     super(level);
 
-    for (let y = 0; y < 14; y++) {
-      for (let x = 0; x < 15; x++) {
+    for (let y = 0; y < tileY; y++) {
+      for (let x = 0; x < tileX; x++) {
         const floor = new FloorComponent(this);
-        floor.setPosition(x*32, y*32);
+        floor.setPosition(x * level.tileWidth, y * level.tileHeight);
         this.addComponent(floor);
         this.floors.push(floor);
       }
@@ -24,8 +24,12 @@ export class FloorActor extends Actor {
     // 何もしない
   }
 
+  /**
+   * 踏んだ場所をコンポーネントに伝える
+   * @param position 踏んだ場所
+   */
   stepedOn(position: Vector2) {
-    const floor = this.floors.filter(floor => floor.x === position.x && floor.y === position.y);
+    const floor = this.floors.filter(floor => (floor.x === position.x) && (floor.y === position.y));
     floor[0].steped();
   }
 }

@@ -10,10 +10,12 @@ import { StartEventActor } from "../actors/start_event_actor";
 import { GoalEventActor } from "../actors/goal_event_actor";
 import { JsonRepository } from "../repositories/json_repository";
 import { NeverAgainLevel } from "./never_again_level";
+import { TileActor } from "../actors/tile_actor";
+import { Layer } from "../bases/layer";
 
 export class FirstLevel extends NeverAgainLevel {
   private sounded = false;
-  
+
   constructor(game: g.Game) {
     super(game, [
       "stage1",
@@ -33,8 +35,12 @@ export class FirstLevel extends NeverAgainLevel {
 
     this.actors.push(new BackgroundActor(this));
 
-    this.floor = new FloorActor(this);
-    this.actors.push(this.floor);
+    // const floorLayer = new Layer();
+    // floorLayer.appends(this.generateTiles(15, 14));
+    // this.floor = new FloorActor(15, 14, this);
+    // this.actors.push(this.floor);
+
+    // 層に分けてみる
     
     const repository: MetaDataRepositoryInterface = new JsonRepository(this.scene);
     const metas = repository.fetchMetaBlocks("stage1");
@@ -109,5 +115,17 @@ export class FirstLevel extends NeverAgainLevel {
       (this.scene.assets["goal_bgm"] as g.AudioAsset).play();
       this.sounded = true;
     }
+  }
+
+  generateTiles(tileX: number, tileY: number) {
+    let ary = [];
+    for (let y = 0; y < tileY; y++) {
+      for (let x = 0; x < tileX; x++) {
+        const tileActor = new TileActor(this, x, y);
+        ary.push(tileActor);
+      }
+    }
+
+    return ary;
   }
 }

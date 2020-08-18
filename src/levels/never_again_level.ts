@@ -3,6 +3,8 @@ import { Vector2 } from "../utils/vector2";
 import { FloorActor } from "../actors/floor_actor";
 import { PlayerActor } from "../actors/player_actor";
 import { BlockActor } from "../actors/block_actor";
+import { TileActor } from "../actors/tile_actor";
+import { Layer, LayerTag } from "../bases/layer";
 
 export abstract class NeverAgainLevel extends Level {
 
@@ -14,11 +16,19 @@ export abstract class NeverAgainLevel extends Level {
   // 通過すべき座標
   protected stepedOns: Vector2[] = [];
 
+  /**
+   * 各層を持つ
+   * appendLayerで追加する
+   */
+  layers: {layer: Layer, tag: LayerTag}[]
+
   // 床
   protected floor!: FloorActor;
 
   constructor(game: g.Game, assetIds: string[]) {
     super(game, assetIds);
+
+    this.layers = [];
   }
 
   generateWalls(x: number, y: number, start: Vector2, goal: Vector2) {
@@ -60,6 +70,16 @@ export abstract class NeverAgainLevel extends Level {
 
   stepOn(position: Vector2) {
     this.floor.stepedOn(position);
+  }
+
+  /**
+   * このレベルにレイヤーを追加する
+   * @param layer 追加するレイヤー
+   * @param tag レイヤーの種別
+   */
+  appendLayer(layer: Layer, tag: LayerTag): void {
+    this._entity.append(layer.entity);
+    this.layers.push({layer, tag});
   }
 
 }
