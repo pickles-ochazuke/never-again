@@ -5,14 +5,14 @@ import { NeverAgainLevel } from "./never_again_level";
 
 export class PlaygroundLevel extends NeverAgainLevel {
 
-	floorLayer: Layer | null = null;
-
 	constructor(game: g.Game) {
 		super(game, []);
 	}
 
 	initialize(): void {
 
+		// 各層を作成する
+		// 床の層
 		this.floorLayer = new Layer(this.scene);
 
 		this.floorLayer.appends(range(15*14).map(index => {
@@ -25,6 +25,14 @@ export class PlaygroundLevel extends NeverAgainLevel {
 		}));
 
 		this.appendLayer(this.floorLayer, "Floor");
+		
+		// イベントの層
+		
+
+		// キャラクターの層
+
+		// UI層
+		
 		this.scene.append(this._entity);
 	}
 

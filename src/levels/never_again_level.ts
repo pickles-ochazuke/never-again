@@ -13,22 +13,20 @@ export abstract class NeverAgainLevel extends Level {
 		return this._player;
 	}
 
+	protected floorLayer!: Layer;
+	protected tiles!: TileActor[];
+
 	// 通過すべき座標
-	protected stepedOns: Vector2[] = [];
+	protected stepedOns!: Vector2[];
 
 	/**
    * 各層を持つ
    * appendLayerで追加する
    */
-	layers: {layer: Layer; tag: LayerTag}[];
-
-	// 床
-	protected floor!: FloorActor;
+	layers!: {layer: Layer; tag: LayerTag}[];
 
 	constructor(game: g.Game, assetIds: string[]) {
 		super(game, assetIds);
-
-		this.layers = [];
 	}
 
 	generateWalls(x: number, y: number, start: Vector2, goal: Vector2) {
@@ -69,7 +67,8 @@ export abstract class NeverAgainLevel extends Level {
 	}
 
 	stepOn(position: Vector2) {
-		this.floor.stepedOn(position);
+		const floor = this.tiles.filter(tile => (tile.x === position.x) && (tile.y === position.y));
+		floor[0].stepOn();
 	}
 
 	/**

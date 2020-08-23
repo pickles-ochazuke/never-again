@@ -12,6 +12,14 @@ export class TileActor extends Actor {
 		return this.transform.position;
 	}
 
+	get x() {
+		return this.position.x;
+	}
+
+	get y() {
+		return this.position.y;
+	}
+
 	private get width() {
 		return this.tile.width;
 	}

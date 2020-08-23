@@ -1,17 +1,17 @@
 import { BackgroundActor } from "../actors/background_actor";
 import { BlockActor } from "../actors/block_actor";
 import { ControllerActor } from "../actors/controller_actor";
-import { FloorActor } from "../actors/floor_actor";
 import { GoalBlockActor } from "../actors/goal_block_actor";
 import { GoalEventActor } from "../actors/goal_event_actor";
 import { PlayerActor } from "../actors/player_actor";
 import { StartEventActor } from "../actors/start_event_actor";
 import { TileActor } from "../actors/tile_actor";
-import { Layer } from "../bases/layer";
 import { MetaDataRepositoryInterface } from "../interfaces/meta_data_repository_interface";
 import { JsonRepository } from "../repositories/json_repository";
 import { Vector2 } from "../utils/vector2";
 import { NeverAgainLevel } from "./never_again_level";
+import { Layer } from "../bases/layer";
+import { range } from "../utils/utils";
 
 export class FirstLevel extends NeverAgainLevel {
 	private sounded = false;
@@ -32,23 +32,38 @@ export class FirstLevel extends NeverAgainLevel {
 	}
 
 	initialize(): void {
+		
+		this.tiles = [];
+		this.stepedOns = [];
+		this.layers = [];
 
+		// メタデータの取得
+		const repository: MetaDataRepositoryInterface = new JsonRepository(this.scene);
+
+		// 背景の作成
 		this.actors.push(new BackgroundActor(this));
 
-		// const floorLayer = new Layer();
-		// floorLayer.appends(this.generateTiles(15, 14));
-		// this.floor = new FloorActor(15, 14, this);
-		// this.actors.push(this.floor);
+		// 床の層
+		this.floorLayer = new Layer(this.scene);
 
-		// 層に分けてみる
+		this.floorLayer.appends(range(15*14).map(index => {
+			const x = index % 15;
+			const y = Math.floor(index / 15);
 
-		const repository: MetaDataRepositoryInterface = new JsonRepository(this.scene);
+			const tile = new TileActor(this, x, y);
+			this.tiles.push(tile);
+			return tile;
+		}));
+
+		this.appendLayer(this.floorLayer, "Floor");
+
+		// 障害物の作成
 		const metas = repository.fetchMetaBlocks("stage1");
 		const blocks: BlockActor[] = [];
 		metas.forEach(meta => blocks.push(new BlockActor(this, meta.position.x, meta.position.y)));
 		this.actors.push(...blocks);
 
-		// スタートとゴールを作成
+		// スタートとゴールの位置を作成
 		// スタートとゴールは常に真ん中の下と上にする。
 		const startPosition: Vector2 = new Vector2(7, 13);
 		const goalPosition: Vector2 = new Vector2(7, 0);
@@ -57,22 +72,26 @@ export class FirstLevel extends NeverAgainLevel {
 		const walls: BlockActor[] = this.generateWalls(15, 14, startPosition, goalPosition);
 		walls.forEach(wall => this.actors.push(wall));
 
+		// ゴール手前のブロック
 		const goalBlock = new GoalBlockActor(this, goalPosition.x, goalPosition.y + 1);
 		this.actors.push(goalBlock);
 		walls.push(goalBlock);
 
+		// プレイヤーの作成
 		this._player = new PlayerActor(this);
 		this.player.move(startPosition);
 		this.actors.push(this.player);
 
-
+		// UIの作成
 		const controller = new ControllerActor(this, g.game.width, g.game.height * 0.3);
 		controller.setPosition(0, g.game.height * 0.7);
 		this.actors.push(controller);
 
+		// 開始イベント
 		const startEvent = new StartEventActor(this, startPosition.x, startPosition.y);
 		this.actors.push(startEvent);
 
+		// 終了イベント
 		const goalEvent = new GoalEventActor(this, goalPosition.x, goalPosition.y);
 		this.actors.push(goalEvent);
 
