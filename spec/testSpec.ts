@@ -10,5 +10,8 @@ describe("mainScene", () => {
 
   it("example", () => {
     expect(g).not.toBeUndefined();
+
+    const game = new g.Game()
+    const scene = new g.Scene({game: g.game});
   });
 });

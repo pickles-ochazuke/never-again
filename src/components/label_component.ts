@@ -1,52 +1,51 @@
-import { RendererComponent } from "./renderer_component";
 import { Actor } from "../bases/actor";
+import { RendererComponent } from "./renderer_component";
 
 export class LabelComponent extends RendererComponent {
 
-  private font!: g.DynamicFont;
-  private label!: g.Label;
-  private visible: boolean = false;
+	private font!: g.DynamicFont;
+	private label!: g.Label;
+	private visible: boolean = false;
 
-  constructor(actor: Actor, str: string) {
-    super(actor);
+	constructor(actor: Actor, str: string) {
+		super(actor);
 
-    this.label.text = str;
-    this.label.invalidate();
-  }
+		this.label.text = str;
+		this.label.invalidate();
+	}
 
-  show(): void {
-    this.visible = true;
-  }
+	show(): void {
+		this.visible = true;
+	}
 
-  hide(): void {
-    this.visible = false;
-  }
+	hide(): void {
+		this.visible = false;
+	}
 
-  update(): void {
-    if (this.visible) {
-      this.label.show();
-    }
-    else {
-      this.label.hide();
-    }
-  }
-  
-  generate(): g.E {
+	update(): void {
+		if (this.visible) {
+			this.label.show();
+		} else {
+			this.label.hide();
+		}
+	}
+
+	generate(): g.E {
 		this.font = new g.DynamicFont({
 			game: g.game,
 			fontFamily: g.FontFamily.Serif,
 			size: 32
-    });
-    
+		});
+
 		this.label = new g.Label({
 			scene: this.level.scene,
 			font: this.font,
 			text: "SSSS",
 			fontSize: 32,
-      textColor: "White"
-    });
-    
-    return this.label;
-  }
+			textColor: "White"
+		});
+
+		return this.label;
+	}
 
 }

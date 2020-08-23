@@ -6,37 +6,37 @@ import { Vector2 } from "../utils/vector2";
 
 export class BlockActor extends Actor {
 
-  protected block: BlockComponent;
+	protected block: BlockComponent;
 
-  get activated() {
-    return this.block.activated;
-  }
+	get activated() {
+		return this.block.activated;
+	}
 
-  private transform: TransformComponent;
-  get x() {
-    return this.transform.position.x;
-  }
+	private transform: TransformComponent;
+	get x() {
+		return this.transform.position.x;
+	}
 
-  get y() {
-    return this.transform.position.y;
-  }
+	get y() {
+		return this.transform.position.y;
+	}
 
-  constructor(level: Level, x: number, y: number) {
-    super(level);
+	constructor(level: Level, x: number, y: number) {
+		super(level);
 
 
-    this.block = new BlockComponent(this);
-    this.addComponent(this.block);
+		this.block = new BlockComponent(this);
+		this.addComponent(this.block);
 
-    this.transform = new TransformComponent(this);
-    this.addComponent(this.transform);
+		this.transform = new TransformComponent(this);
+		this.addComponent(this.transform);
 
-    this.transform.move(new Vector2(x, y));
-    this._entity.x = this.transform.position.x * this.block.width;
-    this._entity.y = this.transform.position.y * this.block.height;
-  }
-  
-  updateActor(): void {
-    // 何もしない
-  }
+		this.transform.move(new Vector2(x, y));
+		this._entity.x = this.transform.position.x * this.block.width;
+		this._entity.y = this.transform.position.y * this.block.height;
+	}
+
+	updateActor(): void {
+		// 何もしない
+	}
 }

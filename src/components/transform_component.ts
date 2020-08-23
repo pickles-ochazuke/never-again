@@ -3,12 +3,12 @@ import { Vector2 } from "../utils/vector2";
 
 export class TransformComponent extends Component {
 
-  position: Vector2 = new Vector2();
+	position: Vector2 = new Vector2();
 
-  update(): void {
-  }
+	update(): void {
+	}
 
-  move(v: Vector2): void {
-    this.position.plus(v);
-  }
+	move(v: Vector2): void {
+		this.position.plus(v);
+	}
 }

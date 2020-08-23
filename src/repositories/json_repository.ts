@@ -1,6 +1,6 @@
-import { Vector2 } from "../utils/vector2";
-import { MetaDataRepositoryInterface } from "../interfaces/meta_data_repository_interface";
 import { MetaBlock } from "../enities/meta_block";
+import { MetaDataRepositoryInterface } from "../interfaces/meta_data_repository_interface";
+import { Vector2 } from "../utils/vector2";
 
 export class JsonRepository implements MetaDataRepositoryInterface {
 
